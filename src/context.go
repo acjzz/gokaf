@@ -18,15 +18,15 @@ func setStrContextKey(ctx context.Context, key string, value string) context.Con
 }
 
 func setEngineKey(ctx context.Context, value string) context.Context {
-	return setStrContextKey(ctx, ENGINE_KEY, fmt.Sprintf("GE[%s]",value))
+	return setStrContextKey(ctx, ENGINE_KEY, value)
 }
 
 func setTopicKey(ctx context.Context, value string) context.Context {
-	return setStrContextKey(ctx, TOPIC_KEY, fmt.Sprintf("T[%s]",value))
+	return setStrContextKey(ctx, TOPIC_KEY, value)
 }
 
 func setConsumerKey(ctx context.Context, value int) context.Context {
-	return setStrContextKey(ctx, CONSUMER_KEY, fmt.Sprintf("Consumer%d",value))
+	return setStrContextKey(ctx, CONSUMER_KEY, fmt.Sprintf("%d", value))
 }
 
 func setProducerKey(ctx context.Context) context.Context {
@@ -42,4 +42,16 @@ func getEngineToken(ctx context.Context) string {
 		}
 	}
 	return strings.Join(elements[:], " - ")
+}
+
+func getLogFields(ctx context.Context) map[string]interface{} {
+	elements := map[string]interface{}{}
+
+	for _, k := range []string{ ENGINE_KEY, TOPIC_KEY , CONSUMER_KEY, PRODUCER_KEY} {
+		v := ctx.Value(k)
+		if v != nil {
+			elements[k] = v
+		}
+	}
+	return elements
 }

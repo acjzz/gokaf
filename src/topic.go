@@ -2,25 +2,29 @@ package src
 
 import (
 	"context"
+	"github.com/Sirupsen/logrus"
 )
 
 type Topic struct {
 	ctx       context.Context
 	ctxCancel context.CancelFunc
+	logger    *logrus.Entry
 	name      string
-	channel   chan messageInterface
+	channel   chan internalMessage
 	consumers []*consumer
 	producer  *producer
 }
 
 func NewTopic(ctx context.Context, name string) *Topic {
-	channelTopic := make(chan messageInterface)
+	channelTopic := make(chan internalMessage)
 	ctx, cancel := context.WithCancel(ctx)
-	pctx := setProducerKey(ctx)
-
+	pctx := setTopicKey(ctx, name)
+	logger := logrus.WithFields(getLogFields(ctx))
+	logger.Info("create")
 	return &Topic{
 		ctx,
 		cancel,
+		logger,
 		name,
 		channelTopic,
 		[]*consumer{},
@@ -29,6 +33,7 @@ func NewTopic(ctx context.Context, name string) *Topic {
 }
 
 func (t *Topic) Stop() {
+	t.logger.Warn("stop")
 	t.ctxCancel()
 }
 
@@ -43,7 +48,7 @@ func (t *Topic) AddConsumers(num int) {
 	}
 }
 
-func (t *Topic) Publish(message messageInterface) error {
+func (t *Topic) Publish(message internalMessage) error {
 	return t.producer.publish(message)
 }
 

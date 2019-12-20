@@ -18,8 +18,8 @@ func TestNewInternalMessage(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewInternalMessage(tt.args.value); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewInternalMessage() = %v, want %v", got, tt.want)
+			if got := newInternalMessage(tt.args.value); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("newInternalMessage() = %v, want %v", got, tt.want)
 			}
 		})
 	}

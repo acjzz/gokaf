@@ -1,19 +1,13 @@
 package src
 
-import "fmt"
-
-type messageInterface interface {
-	consume()
-}
-
 type internalMessage struct {
-	value	string
+	value	interface{}
 }
 
-func NewInternalMessage(value string) *internalMessage {
-	return &internalMessage{value }
+func newInternalMessage(value interface{}) internalMessage {
+	return internalMessage{value }
 }
 
 func (m *internalMessage) consume() {
-	fmt.Println(m.value)
+	// DoSomething
 }

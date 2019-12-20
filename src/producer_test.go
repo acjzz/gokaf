@@ -49,7 +49,7 @@ func Test_producer_Publish(t *testing.T) {
 		fields fields
 		args   args
 	}{
-		{ "publish", fields{}, args{ NewInternalMessage("message10")}, },
+		{ "publish", fields{}, args{newInternalMessage("message10")}, },
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

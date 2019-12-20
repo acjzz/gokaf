@@ -2,32 +2,33 @@ package src
 
 import (
 	"context"
-	"fmt"
+	"github.com/Sirupsen/logrus"
 )
 
 type consumer struct {
 	ctx		context.Context
-	channel *chan messageInterface
+	channel *chan internalMessage
+	logger    *logrus.Entry
 }
 
-func newConsumer(ctx context.Context, ch *chan messageInterface) *consumer {
-	fmt.Printf("%s\n", getEngineToken(ctx))
-	return &consumer{ctx, ch}
+func newConsumer(ctx context.Context, ch *chan internalMessage) *consumer {
+	return &consumer{ctx, ch, logrus.WithFields(getLogFields(ctx))}
 }
 
 func (c *consumer) run() {
 	go func() {
-		fmt.Println("Consumer start")
+		c.logger.Debug("Start")
 		for {
 			select {
 			case <- c.ctx.Done():
-				fmt.Println("Consumer stop")
+				c.logger.Debug("Stop")
 				return
 			case m, ok := <-*c.channel:
 				if !ok {
-					fmt.Println("Topic closed")
+					c.logger.Warn("Closed")
 					break
 				} else {
+					c.logger.Infof("Consume => %s", m.value)
 					m.consume()
 				}
 			}
