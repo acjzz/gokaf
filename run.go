@@ -9,7 +9,7 @@ import (
 func main(){
 	ge := gofka.NewGofkaEngine("Engine")
 	topicName := "Topic0"
-	ge.AddTopic(topicName)
+	ge.AddTopic(topicName, 5)
 	i := 0
 	for {
 		e := ge.Publish(topicName, fmt.Sprintf("Message%d", i))
@@ -17,6 +17,6 @@ func main(){
 			break
 		}
 		i += 1
-		time.Sleep(time.Second)
+		time.Sleep(time.Millisecond)
 	}
 }

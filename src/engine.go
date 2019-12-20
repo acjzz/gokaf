@@ -48,11 +48,14 @@ func (ge *GofkaEngine) Stop() {
 	ge.ctxCancel()
 }
 
-func (ge *GofkaEngine) AddTopic(name string) {
+func (ge *GofkaEngine) AddTopic(name string, numConsumers ...int ) {
 	name = strings.ToLower(name)
 	if _, ok := ge.topics[name]; !ok {
 		ctx := setTopicKey(ge.ctx, name)
 		ge.topics[name] = NewTopic(ctx, name)
+		if len(numConsumers) > 0 {
+			ge.topics[name].AddConsumers(numConsumers[0])
+		}
 		ge.topics[name].Run()
 	} else {
 		ge.logger.Warn("topic already exists")
