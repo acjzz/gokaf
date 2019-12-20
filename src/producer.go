@@ -1,6 +1,9 @@
 package src
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 type producer struct {
 	ctx		context.Context
@@ -11,6 +14,12 @@ func newProducer(ctx context.Context, ch *chan messageInterface) *producer {
 	return &producer{ctx, ch}
 }
 
-func (p *producer) publish(message messageInterface) {
-	*p.channel <- message
+func (p *producer) publish(message messageInterface) error {
+	select {
+	case <-p.ctx.Done():
+		return fmt.Errorf("Topic closed")
+	default:
+		*p.channel <- message
+		return nil
+	}
 }
