@@ -13,9 +13,10 @@ type Topic struct {
 	channel   chan internalMessage
 	consumers []*consumer
 	producer  *producer
+	handler   func(interface{})
 }
 
-func NewTopic(ctx context.Context, name string) *Topic {
+func NewTopic(ctx context.Context, name string, handler func(interface{})) *Topic {
 	channelTopic := make(chan internalMessage)
 	ctx, cancel := context.WithCancel(ctx)
 	pctx := setTopicKey(ctx, name)
@@ -29,6 +30,7 @@ func NewTopic(ctx context.Context, name string) *Topic {
 		channelTopic,
 		[]*consumer{},
 		newProducer(pctx, &channelTopic),
+		handler,
 	}
 }
 
@@ -39,7 +41,7 @@ func (t *Topic) Stop() {
 
 func (t *Topic) AddConsumer() {
 	ctx := setConsumerKey(t.ctx, len(t.consumers))
-	t.consumers = append(t.consumers, newConsumer(ctx, &t.channel))
+	t.consumers = append(t.consumers, newConsumer(ctx, &t.channel, t.handler))
 }
 
 func (t *Topic) AddConsumers(num int) {

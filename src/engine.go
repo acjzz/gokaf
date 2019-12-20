@@ -48,11 +48,11 @@ func (ge *GofkaEngine) Stop() {
 	ge.ctxCancel()
 }
 
-func (ge *GofkaEngine) AddTopic(name string, numConsumers ...int ) {
+func (ge *GofkaEngine) AddTopic(name string, handler func(interface{}), numConsumers ...int ) {
 	name = strings.ToLower(name)
 	if _, ok := ge.topics[name]; !ok {
 		ctx := setTopicKey(ge.ctx, name)
-		ge.topics[name] = NewTopic(ctx, name)
+		ge.topics[name] = NewTopic(ctx, name, handler)
 		if len(numConsumers) > 0 {
 			ge.topics[name].AddConsumers(numConsumers[0])
 		}

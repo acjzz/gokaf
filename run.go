@@ -6,10 +6,14 @@ import (
 	"time"
 )
 
+func handler(obj interface{}){
+	fmt.Println(obj.(string))
+}
+
 func main(){
 	ge := gofka.NewGofkaEngine("Engine")
 	topicName := "Topic0"
-	ge.AddTopic(topicName, 5)
+	ge.AddTopic(topicName, handler, 5)
 	i := 0
 	for {
 		e := ge.Publish(topicName, fmt.Sprintf("Message%d", i))
