@@ -6,6 +6,7 @@ import (
 
 type Topic struct {
 	ctx       context.Context
+	ctxCancel context.CancelFunc
 	name      string
 	channel   chan messageInterface
 	consumers []*consumer
@@ -14,13 +15,19 @@ type Topic struct {
 
 func NewTopic(ctx context.Context, name string) *Topic {
 	channelTopic := make(chan messageInterface)
+	ctx, cancel := context.WithCancel(ctx)
 	return &Topic{
 		ctx,
+		cancel,
 		name,
 		channelTopic,
 		[]*consumer{},
 		newProducer(ctx, &channelTopic),
 	}
+}
+
+func (t *Topic) Stop() {
+	t.ctxCancel()
 }
 
 func (t *Topic) AddConsumer() {
@@ -33,8 +40,8 @@ func (t *Topic) AddConsumers(num int) {
 	}
 }
 
-func (t *Topic) Publish(message messageInterface) {
-	t.producer.publish(message)
+func (t *Topic) Publish(message messageInterface) error {
+	return t.producer.publish(message)
 }
 
 func (t *Topic) Run() {
