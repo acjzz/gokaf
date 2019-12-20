@@ -61,7 +61,7 @@ func Test_consumer_Run(t *testing.T) {
 			}
 
 			go func(){
-				c.Run()
+				c.run()
 			}()
 			cancel()
 

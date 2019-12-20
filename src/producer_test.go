@@ -66,7 +66,7 @@ func Test_producer_Publish(t *testing.T) {
 			}
 
 			go func(){
-				p.Publish(tt.args.message)
+				p.publish(tt.args.message)
 			}()
 			cancel()
 		})
