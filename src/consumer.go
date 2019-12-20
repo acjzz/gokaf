@@ -6,13 +6,14 @@ import (
 )
 
 type consumer struct {
-	ctx		context.Context
+	ctx     context.Context
 	channel *chan internalMessage
-	logger    *logrus.Entry
+	logger  *logrus.Entry
+	handler func(interface{})
 }
 
-func newConsumer(ctx context.Context, ch *chan internalMessage) *consumer {
-	return &consumer{ctx, ch, logrus.WithFields(getLogFields(ctx))}
+func newConsumer(ctx context.Context, ch *chan internalMessage, handler func(interface{})) *consumer {
+	return &consumer{ctx, ch, logrus.WithFields(getLogFields(ctx)), handler, }
 }
 
 func (c *consumer) run() {
@@ -29,7 +30,7 @@ func (c *consumer) run() {
 					break
 				} else {
 					c.logger.Infof("Consume => %s", m.value)
-					m.consume()
+					c.handler(m.value)
 				}
 			}
 		}
