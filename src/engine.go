@@ -3,6 +3,8 @@ package src
 import (
 	"context"
 	"fmt"
+	"github.com/Sirupsen/logrus"
+	"log"
 	"os"
 	"os/signal"
 	"strings"
@@ -11,20 +13,31 @@ import (
 type GofkaEngine struct {
 	ctx       context.Context
 	ctxCancel context.CancelFunc
+	logger    *logrus.Entry
 	topics    map[string]*Topic
 }
 
 func NewGofkaEngine(name string) *GofkaEngine {
 	ctx, cancel := context.WithCancel(context.Background())
 	ctx = setEngineKey(ctx, name)
-	ge := GofkaEngine{ ctx,cancel, map[string]*Topic{}, }
+	logrus.SetFormatter(&logrus.TextFormatter{
+		FullTimestamp: true,
+	})
+	log.SetOutput(os.Stdout)
+	logrus.SetLevel(logrus.DebugLevel)
+	ge := GofkaEngine{
+		ctx,
+		cancel,
+		logrus.WithFields(getLogFields(ctx)),
+		map[string]*Topic{},
+	}
 
 	go func(ge *GofkaEngine) {
 		sig := make(chan os.Signal, 1)
 		signal.Notify(sig, os.Interrupt)
 		<-sig
 		// Shutdown. Cancel application context will kill all attached tasks.
-		fmt.Println("Shutting down gofka engine")
+		ge.logger.Warn("shutting down")
 		ge.Stop()
 	}(&ge)
 
@@ -42,15 +55,16 @@ func (ge *GofkaEngine) AddTopic(name string) {
 		ge.topics[name] = NewTopic(ctx, name)
 		ge.topics[name].Run()
 	} else {
-		fmt.Printf("Topic %s already exists\n", name)
+		ge.logger.Warn("topic already exists")
 	}
 }
 
-func (ge *GofkaEngine) Publish(name string, message messageInterface) error {
+func (ge *GofkaEngine) Publish(name string, obj interface{}) error {
 	name = strings.ToLower(name)
 	if _, ok := ge.topics[name]; ok {
-		return ge.topics[name].Publish(message)
+		return ge.topics[name].Publish(newInternalMessage(obj))
 	} else {
+		ge.logger.Error("topic does not exist")
 		return fmt.Errorf("Topic %s does not exists\n", name)
 	}
 }
