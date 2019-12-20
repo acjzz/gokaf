@@ -7,8 +7,8 @@ import (
 )
 
 func main(){
-	ge := gofka.NewGofkaEngine("test")
-	topicName := "test"
+	ge := gofka.NewGofkaEngine("Engine")
+	topicName := "Topic0"
 	ge.AddTopic(topicName)
 	i := 0
 	for {
