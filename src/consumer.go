@@ -14,7 +14,7 @@ func newConsumer(ctx context.Context, ch *chan messageInterface) *consumer {
 	return &consumer{ctx, ch}
 }
 
-func (c *consumer) Run() {
+func (c *consumer) run() {
 	go func() {
 		for {
 			select {

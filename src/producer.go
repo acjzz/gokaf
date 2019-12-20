@@ -11,6 +11,6 @@ func newProducer(ctx context.Context, ch *chan messageInterface) *producer {
 	return &producer{ctx, ch}
 }
 
-func (p *producer) Publish(message messageInterface) {
+func (p *producer) publish(message messageInterface) {
 	*p.channel <- message
 }

@@ -12,11 +12,9 @@ func main(){
 	defer cancel()
 
 	t := gofka.NewTopic(ctx, "test")
-	c := t.NewConsumer()
-	c.Run()
-	p := t.NewProducer()
-	p.Publish(gofka.NewInternalMessage("Testing"))
-	// Wait for SIGINT.
+	t.Run()
+	t.Publish(gofka.NewInternalMessage("Testing"))
+
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, os.Interrupt)
 	<-sig
