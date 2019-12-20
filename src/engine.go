@@ -5,18 +5,19 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"strings"
 )
 
 type GofkaEngine struct {
 	ctx       context.Context
 	ctxCancel context.CancelFunc
-	name      string
 	topics    map[string]*Topic
 }
 
 func NewGofkaEngine(name string) *GofkaEngine {
 	ctx, cancel := context.WithCancel(context.Background())
-	ge := GofkaEngine{ ctx,cancel, name, map[string]*Topic{}, }
+	ctx = setEngineKey(ctx, name)
+	ge := GofkaEngine{ ctx,cancel, map[string]*Topic{}, }
 
 	go func(ge *GofkaEngine) {
 		sig := make(chan os.Signal, 1)
@@ -35,8 +36,10 @@ func (ge *GofkaEngine) Stop() {
 }
 
 func (ge *GofkaEngine) AddTopic(name string) {
+	name = strings.ToLower(name)
 	if _, ok := ge.topics[name]; !ok {
-		ge.topics[name] = NewTopic(ge.ctx, name)
+		ctx := setTopicKey(ge.ctx, name)
+		ge.topics[name] = NewTopic(ctx, name)
 		ge.topics[name].Run()
 	} else {
 		fmt.Printf("Topic %s already exists\n", name)
@@ -44,6 +47,7 @@ func (ge *GofkaEngine) AddTopic(name string) {
 }
 
 func (ge *GofkaEngine) Publish(name string, message messageInterface) error {
+	name = strings.ToLower(name)
 	if _, ok := ge.topics[name]; ok {
 		return ge.topics[name].Publish(message)
 	} else {

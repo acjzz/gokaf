@@ -11,6 +11,7 @@ type consumer struct {
 }
 
 func newConsumer(ctx context.Context, ch *chan messageInterface) *consumer {
+	fmt.Printf("%s\n", getEngineToken(ctx))
 	return &consumer{ctx, ch}
 }
 
