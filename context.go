@@ -1,4 +1,4 @@
-package src
+package gokaf
 
 import (
 	"context"
@@ -7,10 +7,10 @@ import (
 )
 
 const (
-	ENGINE_KEY = "engine-name"
-	TOPIC_KEY = "topic-name"
-	CONSUMER_KEY = "consumer-id"
-	PRODUCER_KEY = "producer-id"
+	EngineKey   = "engine-name"
+	TopicKey    = "topic-name"
+	ConsumerKey = "consumer-id"
+	ProducerKey = "producer-id"
 )
 
 func setStrContextKey(ctx context.Context, key string, value string) context.Context {
@@ -18,24 +18,24 @@ func setStrContextKey(ctx context.Context, key string, value string) context.Con
 }
 
 func setEngineKey(ctx context.Context, value string) context.Context {
-	return setStrContextKey(ctx, ENGINE_KEY, value)
+	return setStrContextKey(ctx, EngineKey, value)
 }
 
 func setTopicKey(ctx context.Context, value string) context.Context {
-	return setStrContextKey(ctx, TOPIC_KEY, value)
+	return setStrContextKey(ctx, TopicKey, value)
 }
 
 func setConsumerKey(ctx context.Context, value int) context.Context {
-	return setStrContextKey(ctx, CONSUMER_KEY, fmt.Sprintf("%d", value))
+	return setStrContextKey(ctx, ConsumerKey, fmt.Sprintf("%d", value))
 }
 
 func setProducerKey(ctx context.Context) context.Context {
-	return setStrContextKey(ctx, PRODUCER_KEY, "Producer")
+	return setStrContextKey(ctx, ProducerKey, "Producer")
 }
 
 func getEngineToken(ctx context.Context) string {
 	var elements []string
-	for _, k := range []string{ ENGINE_KEY, TOPIC_KEY , CONSUMER_KEY, PRODUCER_KEY} {
+	for _, k := range []string{EngineKey, TopicKey, ConsumerKey, ProducerKey} {
 		v := ctx.Value(k)
 		if v != nil {
 			elements = append(elements, v.(string))
@@ -47,7 +47,7 @@ func getEngineToken(ctx context.Context) string {
 func getLogFields(ctx context.Context) map[string]interface{} {
 	elements := map[string]interface{}{}
 
-	for _, k := range []string{ ENGINE_KEY, TOPIC_KEY , CONSUMER_KEY, PRODUCER_KEY} {
+	for _, k := range []string{EngineKey, TopicKey, ConsumerKey, ProducerKey} {
 		v := ctx.Value(k)
 		if v != nil {
 			elements[k] = v

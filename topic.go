@@ -1,8 +1,8 @@
-package src
+package gokaf
 
 import (
 	"context"
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 type Topic struct {

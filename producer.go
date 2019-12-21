@@ -1,9 +1,9 @@
-package src
+package gokaf
 
 import (
 	"context"
 	"fmt"
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 type producer struct {
@@ -20,7 +20,7 @@ func (p *producer) publish(message internalMessage) error {
 	select {
 	case <-p.ctx.Done():
 		p.logger.Warn("closed")
-		return fmt.Errorf("Topic closed")
+		return fmt.Errorf("topic closed")
 	default:
 		*p.channel <- message
 		return nil
