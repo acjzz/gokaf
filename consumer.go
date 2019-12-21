@@ -9,10 +9,10 @@ type consumer struct {
 	ctx     context.Context
 	channel *chan internalMessage
 	logger  *logrus.Entry
-	handler func(interface{})
+	handler func(string, interface{})
 }
 
-func newConsumer(ctx context.Context, ch *chan internalMessage, handler func(interface{})) *consumer {
+func newConsumer(ctx context.Context, ch *chan internalMessage, handler func(string, interface{})) *consumer {
 	return &consumer{ctx, ch, logrus.WithFields(getLogFields(ctx)), handler, }
 }
 
@@ -30,7 +30,7 @@ func (c *consumer) run() {
 					break
 				} else {
 					c.logger.Tracef("Consume => %s", m.value)
-					c.handler(m.value)
+					c.handler(getTopicKey(c.ctx), m.value)
 				}
 			}
 		}

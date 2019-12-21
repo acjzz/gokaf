@@ -3,7 +3,6 @@ package gokaf
 import (
 	"context"
 	"fmt"
-	"strings"
 )
 
 const (
@@ -25,23 +24,16 @@ func setTopicKey(ctx context.Context, value string) context.Context {
 	return setStrContextKey(ctx, TopicKey, value)
 }
 
+func getTopicKey(ctx context.Context) string {
+	return ctx.Value(TopicKey).(string)
+}
+
 func setConsumerKey(ctx context.Context, value int) context.Context {
 	return setStrContextKey(ctx, ConsumerKey, fmt.Sprintf("%d", value))
 }
 
 func setProducerKey(ctx context.Context) context.Context {
 	return setStrContextKey(ctx, ProducerKey, "Producer")
-}
-
-func getEngineToken(ctx context.Context) string {
-	var elements []string
-	for _, k := range []string{EngineKey, TopicKey, ConsumerKey, ProducerKey} {
-		v := ctx.Value(k)
-		if v != nil {
-			elements = append(elements, v.(string))
-		}
-	}
-	return strings.Join(elements[:], " - ")
 }
 
 func getLogFields(ctx context.Context) map[string]interface{} {
