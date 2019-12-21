@@ -1,38 +1,38 @@
-package src
+package gokaf
 
 import (
 	"context"
 	"fmt"
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"log"
 	"os"
 	"os/signal"
 	"strings"
 )
 
-type GofkaEngine struct {
+type Engine struct {
 	ctx       context.Context
 	ctxCancel context.CancelFunc
 	logger    *logrus.Entry
 	topics    map[string]*Topic
 }
 
-func NewGofkaEngine(name string) *GofkaEngine {
+func NewEngine(name string, logLevel logrus.Level) *Engine {
 	ctx, cancel := context.WithCancel(context.Background())
 	ctx = setEngineKey(ctx, name)
 	logrus.SetFormatter(&logrus.TextFormatter{
 		FullTimestamp: true,
 	})
 	log.SetOutput(os.Stdout)
-	logrus.SetLevel(logrus.DebugLevel)
-	ge := GofkaEngine{
+	logrus.SetLevel(logLevel)
+	ge := Engine{
 		ctx,
 		cancel,
 		logrus.WithFields(getLogFields(ctx)),
 		map[string]*Topic{},
 	}
 
-	go func(ge *GofkaEngine) {
+	go func(ge *Engine) {
 		sig := make(chan os.Signal, 1)
 		signal.Notify(sig, os.Interrupt)
 		<-sig
@@ -44,11 +44,11 @@ func NewGofkaEngine(name string) *GofkaEngine {
 	return &ge
 }
 
-func (ge *GofkaEngine) Stop() {
+func (ge *Engine) Stop() {
 	ge.ctxCancel()
 }
 
-func (ge *GofkaEngine) AddTopic(name string, handler func(interface{}), numConsumers ...int ) {
+func (ge *Engine) AddTopic(name string, handler func(interface{}), numConsumers ...int ) {
 	name = strings.ToLower(name)
 	if _, ok := ge.topics[name]; !ok {
 		ctx := setTopicKey(ge.ctx, name)
@@ -62,12 +62,12 @@ func (ge *GofkaEngine) AddTopic(name string, handler func(interface{}), numConsu
 	}
 }
 
-func (ge *GofkaEngine) Publish(name string, obj interface{}) error {
+func (ge *Engine) Publish(name string, obj interface{}) error {
 	name = strings.ToLower(name)
 	if _, ok := ge.topics[name]; ok {
 		return ge.topics[name].Publish(newInternalMessage(obj))
 	} else {
 		ge.logger.Error("topic does not exist")
-		return fmt.Errorf("Topic %s does not exists\n", name)
+		return fmt.Errorf("topic %s does not exists", name)
 	}
 }

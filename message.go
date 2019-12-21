@@ -1,4 +1,4 @@
-package src
+package gokaf
 
 type internalMessage struct {
 	value	interface{}
@@ -6,8 +6,4 @@ type internalMessage struct {
 
 func newInternalMessage(value interface{}) internalMessage {
 	return internalMessage{value }
-}
-
-func (m *internalMessage) consume() {
-	// DoSomething
 }

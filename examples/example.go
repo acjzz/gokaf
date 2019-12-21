@@ -1,9 +1,3 @@
-# Gokaf
-Gokaf is a simple in-memory PubSub Engine to enable realtime data pipelines
-
-## Example
-
-```go
 package main
 
 import (
@@ -48,6 +42,3 @@ func main(){
 	}
 	ge.Stop()
 }
-```
-
-

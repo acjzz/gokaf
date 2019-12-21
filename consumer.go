@@ -1,8 +1,8 @@
-package src
+package gokaf
 
 import (
 	"context"
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 type consumer struct {
@@ -29,7 +29,7 @@ func (c *consumer) run() {
 					c.logger.Warn("Closed")
 					break
 				} else {
-					c.logger.Infof("Consume => %s", m.value)
+					c.logger.Tracef("Consume => %s", m.value)
 					c.handler(m.value)
 				}
 			}
