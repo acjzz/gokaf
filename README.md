@@ -1,5 +1,5 @@
 # Gokaf
-Gokaf is a simple in-memory PubSub Engine to enable realtime data pipelines
+Gokaf is a simple In-memory PubSub Engine to enable near realtime data streams
 
 ## Example
 
@@ -20,34 +20,35 @@ func main(){
 
 	for _, topicName := range topics {
 		// Register different Handler per each Topic as well as the Topics themselves
-		ge.AddTopic(topicName, func(obj interface{}) {
-			fmt.Printf("Consumed %v from topic %s", topicName, obj)
+		ge.AddTopic(topicName, func(topic string, obj interface{}) {
+			// Using Printf on this functions it is only for demonstration purpose only
+			// On a real scenario you will not use this function.
+			fmt.Printf("Consumed '%v' from topic '%s'\n", obj, topic)
 		})
 	}
 
 	go func(){
-		// Simulation of Low Frequency Data Stream
-		for i := 0; i < 1000; i++ {
-			e := ge.Publish(topics[0], fmt.Sprintf("MessageA%d", i))
+		for i := 1; i <= 1000; i++ {
+			// Simulation of High Frequency Data Stream
+			e := ge.Publish(topics[0], fmt.Sprintf("High Frequency Message%d", i))
 			if e != nil {
-				fmt.Printf("publishing to topic %s", topics[0])
+				fmt.Printf("publishing to topic %s, err: %v", topics[0], e)
 				break
 			}
-			time.Sleep(time.Millisecond/10)
+			time.Sleep(time.Millisecond/100)
 		}
 	}()
 
-	for i := 0; i < 1000000; i++ {
-		// Simulation of High Frequency Data Stream
-		e := ge.Publish(topics[1], fmt.Sprintf("MessageA%d", i))
+	// Simulation of Low Frequency Data Stream
+	for i := 1; i <= 50; i++ {
+		e := ge.Publish(topics[1], fmt.Sprintf("Low Frequency Message%d", i))
 		if e != nil {
-			fmt.Printf("publishing to topic %s", topics[1])
+			fmt.Printf("publishing to topic %s, err: %v", topics[1], e)
 			break
 		}
-		time.Sleep(time.Nanosecond)
+		time.Sleep(time.Millisecond)
 	}
+
 	ge.Stop()
 }
 ```
-
-

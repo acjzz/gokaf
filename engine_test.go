@@ -49,7 +49,7 @@ func TestEngine_Publish_Error(t *testing.T) {
 				tt.fields.logLevel,
 			)
 			if tt.startTopic {
-				ge.AddTopic(topicName, func(obj interface{}){})
+				ge.AddTopic(topicName, func(topic string, obj interface{}){})
 				ge.Stop()
 			}
 			err := ge.Publish(tt.args.name, tt.args.obj)
@@ -73,9 +73,11 @@ func TestEngine_Publish(t *testing.T) {
 		topicName := "topic"
 		msg := "Test Message"
 
-		ge.AddTopic(topicName, func(obj interface{}){
+		ge.AddTopic(topicName, func(topic string, obj interface{}){
 			if strings.Compare(fmt.Sprintf("%v", obj), msg) != 0 {
 				t.Errorf("Publish() received = '%v', expected '%v'", obj, msg)
+			} else if strings.Compare(topicName, topic) != 0 {
+				t.Errorf("Publish() received from topic '%s', expected '%s'", topic, topicName)
 			}
 		})
 

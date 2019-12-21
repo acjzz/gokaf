@@ -48,7 +48,7 @@ func (ge *Engine) Stop() {
 	ge.ctxCancel()
 }
 
-func (ge *Engine) AddTopic(name string, handler func(interface{}), numConsumers ...int ) {
+func (ge *Engine) AddTopic(name string, handler func(string, interface{}), numConsumers ...int ) {
 	name = strings.ToLower(name)
 	if _, ok := ge.topics[name]; !ok {
 		ctx := setTopicKey(ge.ctx, name)
