@@ -16,13 +16,18 @@ type Topic struct {
 	handler   func(string, interface{})
 }
 
-func NewTopic(ctx context.Context, name string, handler func(string, interface{})) *Topic {
-	channelTopic := make(chan internalMessage)
+func NewTopic(ctx context.Context, name string, handler func(string, interface{}), numConsumers ...int) *Topic {
+	var channelTopic chan internalMessage
+	if len(numConsumers) > 0 {
+		channelTopic = make(chan internalMessage, numConsumers[0])
+	} else {
+		channelTopic = make(chan internalMessage)
+	}
 	ctx, cancel := context.WithCancel(ctx)
 	pctx := setTopicKey(ctx, name)
 	logger := logrus.WithFields(getLogFields(ctx))
 	logger.Info("create")
-	return &Topic{
+	t := &Topic{
 		ctx,
 		cancel,
 		logger,
@@ -32,6 +37,12 @@ func NewTopic(ctx context.Context, name string, handler func(string, interface{}
 		newProducer(pctx, &channelTopic),
 		handler,
 	}
+	if len(numConsumers) > 0 {
+		t.addConsumers(numConsumers[0])
+	} else {
+		t.addConsumer()
+	}
+	return t
 }
 
 func (t *Topic) Stop() {
@@ -39,14 +50,14 @@ func (t *Topic) Stop() {
 	t.ctxCancel()
 }
 
-func (t *Topic) AddConsumer() {
+func (t *Topic) addConsumer() {
 	ctx := setConsumerKey(t.ctx, len(t.consumers))
 	t.consumers = append(t.consumers, newConsumer(ctx, &t.channel, t.handler))
 }
 
-func (t *Topic) AddConsumers(num int) {
+func (t *Topic) addConsumers(num int) {
 	for i := 0; i < num; i += 1 {
-		t.AddConsumer()
+		t.addConsumer()
 	}
 }
 
@@ -55,7 +66,6 @@ func (t *Topic) Publish(message internalMessage) error {
 }
 
 func (t *Topic) Run() {
-	if len(t.consumers) == 0 { t.AddConsumer() }
 	for _, c := range t.consumers {
 		c.run()
 	}

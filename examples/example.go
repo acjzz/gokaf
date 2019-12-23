@@ -34,7 +34,7 @@ func main(){
 	}()
 
 	// Simulation of Low Frequency Data Stream
-	for i := 1; i <= 50; i++ {
+	for i := 1; i <= 35; i++ {
 		e := ge.Publish(topics[1], fmt.Sprintf("Low Frequency Message%d", i))
 		if e != nil {
 			fmt.Printf("publishing to topic %s, err: %v", topics[1], e)
