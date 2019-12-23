@@ -1,5 +1,5 @@
 # Gokaf
-Gokaf is a simple In-memory PubSub Engine to enable near realtime data streams
+Gokaf is a simple In-memory PubSub Engine to enable near real time data streams
 
 ## Example
 
