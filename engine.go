@@ -48,13 +48,14 @@ func (ge *Engine) Stop() {
 	ge.ctxCancel()
 }
 
-func (ge *Engine) AddTopic(name string, handler func(string, interface{}), numConsumers ...int ) {
+func (ge *Engine) AddTopic(name string, handler func(string, interface{}), numConsumers ...int) {
 	name = strings.ToLower(name)
 	if _, ok := ge.topics[name]; !ok {
 		ctx := setTopicKey(ge.ctx, name)
-		ge.topics[name] = NewTopic(ctx, name, handler)
 		if len(numConsumers) > 0 {
-			ge.topics[name].AddConsumers(numConsumers[0])
+			ge.topics[name] = NewTopic(ctx, name, handler, numConsumers[0])
+		} else {
+			ge.topics[name] = NewTopic(ctx, name, handler)
 		}
 		ge.topics[name].Run()
 	} else {
