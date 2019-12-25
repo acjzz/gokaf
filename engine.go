@@ -51,13 +51,12 @@ func (ge *Engine) Stop() {
 func (ge *Engine) AddTopic(name string, handler func(string, interface{}), numConsumers ...int) {
 	name = strings.ToLower(name)
 	if _, ok := ge.topics[name]; !ok {
-		ctx := setTopicKey(ge.ctx, name)
 		if len(numConsumers) > 0 {
-			ge.topics[name] = NewTopic(ctx, name, handler, numConsumers[0])
+			ge.topics[name] = NewTopic(ge.ctx, name, handler, numConsumers[0])
 		} else {
-			ge.topics[name] = NewTopic(ctx, name, handler)
+			ge.topics[name] = NewTopic(ge.ctx, name, handler)
 		}
-		ge.topics[name].Run()
+		ge.topics[name].run()
 	} else {
 		ge.logger.Warn("topic already exists")
 	}
@@ -66,7 +65,7 @@ func (ge *Engine) AddTopic(name string, handler func(string, interface{}), numCo
 func (ge *Engine) Publish(name string, obj interface{}) error {
 	name = strings.ToLower(name)
 	if _, ok := ge.topics[name]; ok {
-		return ge.topics[name].Publish(newInternalMessage(obj))
+		return ge.topics[name].publish(newInternalMessage(obj))
 	} else {
 		ge.logger.Error("topic does not exist")
 		return fmt.Errorf("topic %s does not exists", name)

@@ -22,7 +22,7 @@ func (c *consumer) run() {
 		for {
 			select {
 			case <- c.ctx.Done():
-				c.logger.Debug("Stop")
+				c.logger.Debug("stop")
 				return
 			case m, ok := <-*c.channel:
 				if !ok {
