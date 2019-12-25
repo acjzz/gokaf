@@ -23,8 +23,8 @@ func NewTopic(ctx context.Context, name string, handler func(string, interface{}
 	} else {
 		channelTopic = make(chan internalMessage)
 	}
+	ctx = setTopicKey(ctx, name)
 	ctx, cancel := context.WithCancel(ctx)
-	pctx := setTopicKey(ctx, name)
 	logger := logrus.WithFields(getLogFields(ctx))
 	logger.Info("create")
 	t := &Topic{
@@ -34,7 +34,7 @@ func NewTopic(ctx context.Context, name string, handler func(string, interface{}
 		name,
 		channelTopic,
 		[]*consumer{},
-		newProducer(pctx, &channelTopic),
+		newProducer(ctx, &channelTopic),
 		handler,
 	}
 	if len(numConsumers) > 0 {
@@ -45,7 +45,7 @@ func NewTopic(ctx context.Context, name string, handler func(string, interface{}
 	return t
 }
 
-func (t *Topic) Stop() {
+func (t *Topic) stop() {
 	t.logger.Warn("stop")
 	t.ctxCancel()
 }
@@ -61,11 +61,11 @@ func (t *Topic) addConsumers(num int) {
 	}
 }
 
-func (t *Topic) Publish(message internalMessage) error {
+func (t *Topic) publish(message internalMessage) error {
 	return t.producer.publish(message)
 }
 
-func (t *Topic) Run() {
+func (t *Topic) run() {
 	for _, c := range t.consumers {
 		c.run()
 	}

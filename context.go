@@ -10,6 +10,7 @@ const (
 	TopicKey    = "topic-name"
 	ConsumerKey = "consumer-id"
 	ProducerKey = "producer-id"
+	ProducerValue = "Producer"
 )
 
 func setStrContextKey(ctx context.Context, key string, value string) context.Context {
@@ -33,7 +34,7 @@ func setConsumerKey(ctx context.Context, value int) context.Context {
 }
 
 func setProducerKey(ctx context.Context) context.Context {
-	return setStrContextKey(ctx, ProducerKey, "Producer")
+	return setStrContextKey(ctx, ProducerKey, ProducerValue)
 }
 
 func getLogFields(ctx context.Context) map[string]interface{} {
