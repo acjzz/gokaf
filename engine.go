@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"log"
 	"os"
 	"os/signal"
 	"strings"
@@ -20,15 +19,11 @@ type Engine struct {
 func NewEngine(name string, logLevel logrus.Level) *Engine {
 	ctx, cancel := context.WithCancel(context.Background())
 	ctx = setEngineKey(ctx, name)
-	logrus.SetFormatter(&logrus.TextFormatter{
-		FullTimestamp: true,
-	})
-	log.SetOutput(os.Stdout)
-	logrus.SetLevel(logLevel)
+	ctx = setLogLevelKey(ctx, logLevel)
 	ge := Engine{
 		ctx,
 		cancel,
-		logrus.WithFields(getLogFields(ctx)),
+		NewLogger(ctx),
 		map[string]*Topic{},
 	}
 

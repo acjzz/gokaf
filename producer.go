@@ -14,7 +14,7 @@ type producer struct {
 
 func newProducer(ctx context.Context, ch *chan internalMessage) *producer {
 	pctx := setProducerKey(ctx)
-	return &producer{pctx, ch, logrus.WithFields(getLogFields(ctx))}
+	return &producer{pctx, ch, NewLogger(pctx)}
 }
 
 func (p *producer) publish(message internalMessage) error {
