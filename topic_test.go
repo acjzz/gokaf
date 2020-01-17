@@ -3,6 +3,7 @@ package gokaf
 import (
 	"context"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"strings"
 	"testing"
 )
@@ -13,6 +14,7 @@ func TestTopic_Publish(t *testing.T) {
 
 	t.Run("Topic_Publish", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
+		ctx = setLogLevelKey(ctx, logrus.InfoLevel)
 		topic := NewTopic(
 			ctx,
 			topicName,

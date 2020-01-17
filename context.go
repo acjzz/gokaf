@@ -3,6 +3,7 @@ package gokaf
 import (
 	"context"
 	"fmt"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -10,11 +11,20 @@ const (
 	TopicKey    = "topic-name"
 	ConsumerKey = "consumer-id"
 	ProducerKey = "producer-id"
+	LogLevelKey = "log-level"
 	ProducerValue = "Producer"
 )
 
 func setStrContextKey(ctx context.Context, key string, value string) context.Context {
 	return context.WithValue(ctx, key, value)
+}
+
+func setLogLevelKey(ctx context.Context, logLevel logrus.Level) context.Context {
+	return context.WithValue(ctx, LogLevelKey, logLevel)
+}
+
+func getLogLevelKey(ctx context.Context) logrus.Level {
+	return ctx.Value(LogLevelKey).(logrus.Level)
 }
 
 func setEngineKey(ctx context.Context, value string) context.Context {

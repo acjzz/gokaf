@@ -13,7 +13,7 @@ type consumer struct {
 }
 
 func newConsumer(ctx context.Context, ch *chan internalMessage, handler func(string, interface{})) *consumer {
-	return &consumer{ctx, ch, logrus.WithFields(getLogFields(ctx)), handler, }
+	return &consumer{ctx, ch, NewLogger(ctx), handler, }
 }
 
 func (c *consumer) run() {
