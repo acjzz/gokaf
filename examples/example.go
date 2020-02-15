@@ -14,12 +14,11 @@ func main(){
 
 	for _, topicName := range topics {
 		// Register different Handler per each Topic as well as the Topics themselves
-		ge.AddTopic(topicName, func(topic string, obj interface{}) interface {} {
+		ge.AddTopic(topicName, func(topic string, obj interface{}) {
 			// Printf usage on the handlers is not recommended at all
 			// if you pretend to achieve near realtime streams
 			// In this example is for demonstration purposes only
 			fmt.Printf("Consumed '%v' from topic '%s'\n", obj, topic)
-			return nil
 		})
 	}
 
