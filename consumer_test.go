@@ -12,7 +12,7 @@ func Test_consumer(t *testing.T) {
 		ctx = setLogLevelKey(ctx, logrus.InfoLevel)
 
 		var channel chan internalMessage
-		c := newConsumer(ctx, &channel, func(s string, i interface{}) {})
+		c := newConsumer(ctx, &channel, func(s string, i interface{}) interface{}{ return nil })
 		c.run()
 		cancel()
 	})

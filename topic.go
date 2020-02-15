@@ -13,10 +13,10 @@ type Topic struct {
 	channel   chan internalMessage
 	consumers []*consumer
 	producer  *producer
-	handler   func(string, interface{})
+	handler   func(string, interface{}) interface{}
 }
 
-func NewTopic(ctx context.Context, name string, handler func(string, interface{}), numConsumers ...int) *Topic {
+func NewTopic(ctx context.Context, name string, handler func(string, interface{}) interface{}, numConsumers ...int) *Topic {
 	var channelTopic chan internalMessage
 	if len(numConsumers) > 0 {
 		channelTopic = make(chan internalMessage, numConsumers[0])

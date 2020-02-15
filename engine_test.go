@@ -50,7 +50,7 @@ func TestEngine_Publish_Error(t *testing.T) {
 				tt.fields.logLevel,
 			)
 			if tt.startTopic {
-				ge.AddTopic(topicName, func(topic string, obj interface{}){})
+				ge.AddTopic(topicName, func(topic string, obj interface{})  interface{}{ return nil })
 				ge.Stop()
 			}
 			err := ge.Publish(tt.args.name, tt.args.obj)
@@ -75,12 +75,13 @@ func TestEngine_Publish(t *testing.T) {
 		topicName := "topic"
 		msg := "Test Message"
 
-		ge.AddTopic(topicName, func(topic string, obj interface{}){
+		ge.AddTopic(topicName, func(topic string, obj interface{}) interface {}{
 			if strings.Compare(fmt.Sprintf("%v", obj), msg) != 0 {
 				t.Errorf("publish() received = '%v', expected '%v'", obj, msg)
 			} else if strings.Compare(topicName, topic) != 0 {
 				t.Errorf("publish() received from topic '%s', expected '%s'", topic, topicName)
 			}
+			return nil
 		})
 
 		err := ge.Publish(topicName, msg)
@@ -117,11 +118,12 @@ func TestEngine_Publish_Multiple_Topics(t *testing.T) {
 			ge := NewEngine(tt.name, logrus.ErrorLevel, )
 			for i := 0; i < tt.numTopics; i++ {
 				topicName := fmt.Sprintf("%s-%d",baseTopicName,i)
-				ge.AddTopic(topicName, func(topic string, obj interface{}) {
+				ge.AddTopic(topicName, func(topic string, obj interface{}) interface {} {
 					received := obj.(Message)
 					if strings.Compare(received.topic, topic) != 0 {
 						t.Errorf("publish() received from topic '%s', expected '%s'", received.topic, topicName)
 					}
+					return nil
 				}, tt.numConsumers)
 			}
 

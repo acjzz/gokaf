@@ -18,12 +18,13 @@ func TestTopic_Publish(t *testing.T) {
 		topic := NewTopic(
 			ctx,
 			topicName,
-			func(topic string, obj interface{}){
+			func(topic string, obj interface{}) interface{} {
 				if strings.Compare(fmt.Sprintf("%v", obj), msg.value.(string)) != 0 {
 					t.Errorf("publish() received = '%v', expected '%v'", obj, msg)
 				} else if strings.Compare(topicName, topic) != 0 {
 					t.Errorf("publish() received from topic '%s', expected '%s'", topic, topicName)
 				}
+				return nil
 			},
 		)
 
