@@ -9,10 +9,10 @@ type consumer struct {
 	ctx     context.Context
 	channel *chan internalMessage
 	logger  *logrus.Entry
-	handler func(string, interface{}) interface{}
+	handler func(string, interface{})
 }
 
-func newConsumer(ctx context.Context, ch *chan internalMessage, handler func(string, interface{}) interface{}) *consumer {
+func newConsumer(ctx context.Context, ch *chan internalMessage, handler func(string, interface{})) *consumer {
 	return &consumer{ctx, ch, NewLogger(ctx), handler, }
 }
 
