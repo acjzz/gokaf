@@ -1,7 +1,7 @@
 package gokaf
 
 import (
-"context"
+	"context"
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"strings"
@@ -17,7 +17,7 @@ func Test_producer(t *testing.T) {
 		var channel chan internalMessage
 		p := newProducer(ctx, &channel)
 		cancel()
-		err :=p.publish(internalMessage{"test"})
+		err := p.publish(internalMessage{"test"})
 		if err == nil {
 			t.Errorf("publish() wanted error")
 		} else {
