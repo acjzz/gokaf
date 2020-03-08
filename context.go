@@ -7,11 +7,11 @@ import (
 )
 
 const (
-	EngineKey   = "engine-name"
-	TopicKey    = "topic-name"
-	ConsumerKey = "consumer-id"
-	ProducerKey = "producer-id"
-	LogLevelKey = "log-level"
+	EngineKey     = "engine-name"
+	TopicKey      = "topic-name"
+	ConsumerKey   = "consumer-id"
+	ProducerKey   = "producer-id"
+	LogLevelKey   = "log-level"
 	ProducerValue = "Producer"
 )
 
