@@ -12,14 +12,14 @@ import (
 type Engine struct {
 	ctx       context.Context
 	ctxCancel context.CancelFunc
-	logger    *logrus.Entry
+	logger    logWrapper
 	topics    map[string]*Topic
 }
 
 func NewEngine(name string, logLevel logrus.Level) *Engine {
 	ctx, cancel := context.WithCancel(context.Background())
 	ctx = setEngineKey(ctx, name)
-	ctx = setLogLevelKey(ctx, logLevel)
+	ctx = setLogLevelKeyInCtx(ctx, logLevel)
 	ge := Engine{
 		ctx,
 		cancel,

@@ -2,18 +2,17 @@ package gokaf
 
 import (
 	"context"
-	"github.com/sirupsen/logrus"
 )
 
 type consumer struct {
 	ctx     context.Context
 	channel *chan internalMessage
-	logger  *logrus.Entry
+	logger  logWrapper
 	handler func(string, interface{})
 }
 
 func newConsumer(ctx context.Context, ch *chan internalMessage, handler func(string, interface{})) *consumer {
-	return &consumer{ctx, ch, NewLogger(ctx), handler, }
+	return &consumer{ctx, ch, NewLogger(ctx), handler}
 }
 
 func (c *consumer) run() {
@@ -21,7 +20,7 @@ func (c *consumer) run() {
 		c.logger.Debug("Start")
 		for {
 			select {
-			case <- c.ctx.Done():
+			case <-c.ctx.Done():
 				c.logger.Debug("stop")
 				return
 			case m, ok := <-*c.channel:

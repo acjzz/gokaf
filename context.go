@@ -7,11 +7,11 @@ import (
 )
 
 const (
-	EngineKey   = "engine-name"
-	TopicKey    = "topic-name"
-	ConsumerKey = "consumer-id"
-	ProducerKey = "producer-id"
-	LogLevelKey = "log-level"
+	EngineKey     = "engine-name"
+	TopicKey      = "topic-name"
+	ConsumerKey   = "consumer-id"
+	ProducerKey   = "producer-id"
+	LogLevelKey   = "log-level"
 	ProducerValue = "Producer"
 )
 
@@ -19,11 +19,11 @@ func setStrContextKey(ctx context.Context, key string, value string) context.Con
 	return context.WithValue(ctx, key, value)
 }
 
-func setLogLevelKey(ctx context.Context, logLevel logrus.Level) context.Context {
+func setLogLevelKeyInCtx(ctx context.Context, logLevel logrus.Level) context.Context {
 	return context.WithValue(ctx, LogLevelKey, logLevel)
 }
 
-func getLogLevelKey(ctx context.Context) logrus.Level {
+func getLogLevelKeyFromCtx(ctx context.Context) logrus.Level {
 	return ctx.Value(LogLevelKey).(logrus.Level)
 }
 
