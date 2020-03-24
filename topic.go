@@ -2,13 +2,12 @@ package gokaf
 
 import (
 	"context"
-	"github.com/sirupsen/logrus"
 )
 
 type Topic struct {
 	ctx       context.Context
 	ctxCancel context.CancelFunc
-	logger    *logrus.Entry
+	logger    logWrapper
 	name      string
 	channel   chan internalMessage
 	consumers []*consumer

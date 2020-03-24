@@ -2,13 +2,12 @@ package gokaf
 
 import (
 	"context"
-	"github.com/sirupsen/logrus"
 )
 
 type consumer struct {
 	ctx     context.Context
 	channel *chan internalMessage
-	logger  *logrus.Entry
+	logger  logWrapper
 	handler func(string, interface{})
 }
 

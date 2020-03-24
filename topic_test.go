@@ -14,7 +14,7 @@ func TestTopic_Publish(t *testing.T) {
 
 	t.Run("Topic_Publish", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
-		ctx = setLogLevelKey(ctx, logrus.InfoLevel)
+		ctx = setLogLevelKeyInCtx(ctx, logrus.InfoLevel)
 		topic := NewTopic(
 			ctx,
 			topicName,

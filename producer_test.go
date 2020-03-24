@@ -12,7 +12,7 @@ func Test_producer(t *testing.T) {
 	t.Run("Producer", func(t *testing.T) {
 		wantErrMsg := "topic closed"
 		ctx, cancel := context.WithCancel(context.Background())
-		ctx = setLogLevelKey(ctx, logrus.InfoLevel)
+		ctx = setLogLevelKeyInCtx(ctx, logrus.InfoLevel)
 
 		var channel chan internalMessage
 		p := newProducer(ctx, &channel)
