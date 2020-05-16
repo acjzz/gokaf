@@ -23,7 +23,7 @@ func NewEngine(name string, logLevel logrus.Level) *Engine {
 	ge := Engine{
 		ctx,
 		cancel,
-		NewLogrusLogger(ctx),
+		NewLogrusLogger(ctx, getLogFields),
 		map[string]*Topic{},
 	}
 
