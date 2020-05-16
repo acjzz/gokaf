@@ -7,7 +7,7 @@ import (
 type Topic struct {
 	ctx       context.Context
 	ctxCancel context.CancelFunc
-	logger    logWrapper
+	logger    LogWrapper
 	name      string
 	channel   chan internalMessage
 	consumers []*consumer
@@ -24,7 +24,7 @@ func NewTopic(ctx context.Context, name string, handler func(string, interface{}
 	}
 	ctx = setTopicKey(ctx, name)
 	ctx, cancel := context.WithCancel(ctx)
-	logger := NewLogger(ctx)
+	logger := NewLogrusLogger(ctx)
 	logger.Info("create")
 	t := &Topic{
 		ctx,
