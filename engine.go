@@ -12,7 +12,7 @@ import (
 type Engine struct {
 	ctx       context.Context
 	ctxCancel context.CancelFunc
-	logger    logWrapper
+	logger    LogWrapper
 	topics    map[string]*Topic
 }
 
@@ -23,7 +23,7 @@ func NewEngine(name string, logLevel logrus.Level) *Engine {
 	ge := Engine{
 		ctx,
 		cancel,
-		NewLogger(ctx),
+		NewLogrusLogger(ctx),
 		map[string]*Topic{},
 	}
 

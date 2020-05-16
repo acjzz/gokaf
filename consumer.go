@@ -7,12 +7,12 @@ import (
 type consumer struct {
 	ctx     context.Context
 	channel *chan internalMessage
-	logger  logWrapper
+	logger  LogWrapper
 	handler func(string, interface{})
 }
 
 func newConsumer(ctx context.Context, ch *chan internalMessage, handler func(string, interface{})) *consumer {
-	return &consumer{ctx, ch, NewLogger(ctx), handler}
+	return &consumer{ctx, ch, NewLogrusLogger(ctx), handler}
 }
 
 func (c *consumer) run() {
