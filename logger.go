@@ -27,11 +27,11 @@ type LogWrapper interface {
 }
 
 //NewLogrusLogger returns an instance of Logger
-func NewLogrusLogger(ctx context.Context) LogWrapper {
+func NewLogrusLogger(ctx context.Context, getFields func(ctx context.Context) map[string]interface{}) LogWrapper {
 	logrus.SetFormatter(&logrus.TextFormatter{
 		FullTimestamp: true,
 	})
 	logrus.SetOutput(os.Stdout)
 	logrus.SetLevel(getLogLevelKeyFromCtx(ctx))
-	return logrus.WithFields(getLogFields(ctx))
+	return logrus.WithFields(getFields(ctx))
 }
