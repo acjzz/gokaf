@@ -32,7 +32,7 @@ func TestEngine_Publish_Error(t *testing.T) {
 			fields{"testEngine", logrus.ErrorLevel},
 			args{topicName, "message"},
 			true,
-			fmt.Sprintf("topic %s does not exists", topicName),
+			fmt.Sprintf("topic '%s' does not exist", topicName),
 			false,
 		}, {
 			"TopicStopped",

@@ -52,8 +52,9 @@ func (ge *Engine) AddTopic(name string, handler func(string, interface{}), numCo
 			ge.topics[name] = NewTopic(ge.ctx, name, handler)
 		}
 		ge.topics[name].run()
+		ge.logger.Debugf("topic '%s' created", name)
 	} else {
-		ge.logger.Warn("topic already exists")
+		ge.logger.Warnf("topic '%s' already exists", name)
 	}
 }
 
@@ -62,7 +63,8 @@ func (ge *Engine) Publish(name string, obj interface{}) error {
 	if _, ok := ge.topics[name]; ok {
 		return ge.topics[name].publish(newInternalMessage(obj))
 	} else {
-		ge.logger.Error("topic does not exist")
-		return fmt.Errorf("topic %s does not exists", name)
+		err := fmt.Errorf("topic '%s' does not exist", name)
+		ge.logger.Error(err)
+		return err
 	}
 }
