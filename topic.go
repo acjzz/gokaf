@@ -25,7 +25,6 @@ func NewTopic(ctx context.Context, name string, handler func(string, interface{}
 	ctx = setTopicKey(ctx, name)
 	ctx, cancel := context.WithCancel(ctx)
 	logger := NewLogrusLogger(ctx, getLogFields)
-	logger.Info("create")
 	t := &Topic{
 		ctx,
 		cancel,
