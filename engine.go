@@ -7,13 +7,15 @@ import (
 	"os"
 	"os/signal"
 	"strings"
+	"sync"
 )
 
 type Engine struct {
-	ctx       context.Context
-	ctxCancel context.CancelFunc
-	logger    LogWrapper
-	topics    map[string]*Topic
+	ctx         context.Context
+	ctxCancel   context.CancelFunc
+	logger      LogWrapper
+	topics      map[string]*Topic
+	topicsMutex sync.RWMutex
 }
 
 func NewEngine(name string, logLevel logrus.Level) *Engine {
@@ -25,6 +27,7 @@ func NewEngine(name string, logLevel logrus.Level) *Engine {
 		cancel,
 		NewLogrusLogger(ctx, getLogFields),
 		map[string]*Topic{},
+		sync.RWMutex{},
 	}
 
 	go func(ge *Engine) {
@@ -43,15 +46,28 @@ func (ge *Engine) Stop() {
 	ge.ctxCancel()
 }
 
+func (ge *Engine) doesTopicExists(name string) bool {
+	ge.topicsMutex.RLock()
+	_, ok := ge.topics[name]
+	ge.topicsMutex.RUnlock()
+	return ok
+}
+
 func (ge *Engine) AddTopic(name string, handler func(string, interface{}), numConsumers ...int) {
 	name = strings.ToLower(name)
-	if _, ok := ge.topics[name]; !ok {
+	if !ge.doesTopicExists(name) {
 		if len(numConsumers) > 0 {
+			ge.topicsMutex.Lock()
 			ge.topics[name] = NewTopic(ge.ctx, name, handler, numConsumers[0])
+			ge.topicsMutex.Unlock()
 		} else {
+			ge.topicsMutex.Lock()
 			ge.topics[name] = NewTopic(ge.ctx, name, handler)
+			ge.topicsMutex.Unlock()
 		}
+		ge.topicsMutex.RLock()
 		ge.topics[name].run()
+		ge.topicsMutex.RUnlock()
 		ge.logger.Debugf("topic '%s' created", name)
 	} else {
 		ge.logger.Warnf("topic '%s' already exists", name)
@@ -60,8 +76,11 @@ func (ge *Engine) AddTopic(name string, handler func(string, interface{}), numCo
 
 func (ge *Engine) Publish(name string, obj interface{}) error {
 	name = strings.ToLower(name)
-	if _, ok := ge.topics[name]; ok {
-		return ge.topics[name].publish(newInternalMessage(obj))
+	if ge.doesTopicExists(name) {
+		ge.topicsMutex.RLock()
+		err := ge.topics[name].publish(newInternalMessage(obj))
+		ge.topicsMutex.RUnlock()
+		return err
 	} else {
 		err := fmt.Errorf("topic '%s' does not exist", name)
 		ge.logger.Error(err)
