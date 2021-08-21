@@ -4,5 +4,5 @@ go 1.16
 
 require (
 	github.com/sirupsen/logrus v1.8.1
-	golang.org/x/sys v0.0.0-20210503173754-0981d6026fa6 // indirect
+	golang.org/x/sys v0.0.0-20210820121016-41cdb8703e55 // indirect
 )
