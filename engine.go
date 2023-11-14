@@ -1,3 +1,4 @@
+// Gokaf is a simple In-memory PubSub Engine
 package gokaf
 
 import (
@@ -7,6 +8,7 @@ import (
 // Handler is a function type for handling messages.
 type Handler func(interface{})
 
+// Gokaf PubSub Engine
 type Engine struct {
 	subscribers map[string]map[chan interface{}]struct{}
 	handlers    map[string][]Handler
@@ -24,7 +26,7 @@ func NewEngine(logger Logger) *Engine {
 	}
 }
 
-// Subscribe subscribes a channel to a topic.
+// Subscribes a channel to a topic.
 func (e *Engine) Subscribe(topic string, ch chan interface{}) {
 	e.mu.Lock()
 	defer e.mu.Unlock()
@@ -37,7 +39,7 @@ func (e *Engine) Subscribe(topic string, ch chan interface{}) {
 	e.logger.Printf("Subscribed channel to topic: %s", topic)
 }
 
-// Unsubscribe unsubscribes a channel from a topic.
+// Unsubscribes a channel from a topic.
 func (e *Engine) Unsubscribe(topic string, ch chan interface{}) {
 	e.mu.Lock()
 	defer e.mu.Unlock()
@@ -60,7 +62,7 @@ func (e *Engine) AddHandler(topic string, handler Handler) {
 	e.logger.Printf("Added handler for topic: %s", topic)
 }
 
-// Publish publishes a message to a topic, broadcasting it to all subscribers
+// Publishes a message to a topic, broadcasting it to all subscribers
 // and calling the registered handlers for the topic.
 func (e *Engine) Publish(topic string, message interface{}) {
 	e.mu.RLock()

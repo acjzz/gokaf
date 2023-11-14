@@ -1,13 +1,7 @@
+// Gokaf is a simple In-memory PubSub Engine
 package gokaf
 
-import "fmt"
-
+// Logging Interface
 type Logger interface {
 	Printf(format string, v ...interface{})
-}
-
-type SimpleLogger struct{}
-
-func (l *SimpleLogger) Printf(format string, v ...interface{}) {
-	fmt.Printf(format+"\n", v...)
 }
