@@ -1,70 +1,83 @@
 package gokaf
 
 import (
-	"context"
-	"fmt"
-	"github.com/sirupsen/logrus"
-	"os"
-	"os/signal"
-	"strings"
+	"sync"
 )
 
+// Handler is a function type for handling messages.
+type Handler func(interface{})
+
 type Engine struct {
-	ctx       context.Context
-	ctxCancel context.CancelFunc
-	logger    LogWrapper
-	topics    map[string]*Topic
+	subscribers map[string]map[chan interface{}]struct{}
+	handlers    map[string][]Handler
+	logger      Logger
+	mu          sync.RWMutex
 }
 
-func NewEngine(name string, logLevel logrus.Level) *Engine {
-	ctx, cancel := context.WithCancel(context.Background())
-	ctx = setEngineKey(ctx, name)
-	ctx = setLogLevelKeyInCtx(ctx, logLevel)
-	ge := Engine{
-		ctx,
-		cancel,
-		NewLogrusLogger(ctx, getLogFields),
-		map[string]*Topic{},
+// NewEngine creates a new instance of the Engine.
+func NewEngine(logger Logger) *Engine {
+	return &Engine{
+		subscribers: make(map[string]map[chan interface{}]struct{}),
+		handlers:    make(map[string][]Handler),
+		logger:      logger,
+		mu:          sync.RWMutex{},
+	}
+}
+
+// Subscribe subscribes a channel to a topic.
+func (e *Engine) Subscribe(topic string, ch chan interface{}) {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+
+	if _, exists := e.subscribers[topic]; !exists {
+		e.subscribers[topic] = make(map[chan interface{}]struct{})
 	}
 
-	go func(ge *Engine) {
-		sig := make(chan os.Signal, 1)
-		signal.Notify(sig, os.Interrupt)
-		<-sig
-		// Shutdown. Cancel application context will kill all attached tasks.
-		ge.logger.Warn("shutting down")
-		ge.Stop()
-	}(&ge)
-
-	return &ge
+	e.subscribers[topic][ch] = struct{}{}
+	e.logger.Printf("Subscribed channel to topic: %s", topic)
 }
 
-func (ge *Engine) Stop() {
-	ge.ctxCancel()
-}
+// Unsubscribe unsubscribes a channel from a topic.
+func (e *Engine) Unsubscribe(topic string, ch chan interface{}) {
+	e.mu.Lock()
+	defer e.mu.Unlock()
 
-func (ge *Engine) AddTopic(name string, handler func(string, interface{}), numConsumers ...int) {
-	name = strings.ToLower(name)
-	if _, ok := ge.topics[name]; !ok {
-		if len(numConsumers) > 0 {
-			ge.topics[name] = NewTopic(ge.ctx, name, handler, numConsumers[0])
-		} else {
-			ge.topics[name] = NewTopic(ge.ctx, name, handler)
+	if subscribers, exists := e.subscribers[topic]; exists {
+		delete(subscribers, ch)
+		if len(subscribers) == 0 {
+			delete(e.subscribers, topic)
 		}
-		ge.topics[name].run()
-		ge.logger.Debugf("topic '%s' created", name)
-	} else {
-		ge.logger.Warnf("topic '%s' already exists", name)
+		e.logger.Printf("Unsubscribed channel from topic: %s", topic)
 	}
 }
 
-func (ge *Engine) Publish(name string, obj interface{}) error {
-	name = strings.ToLower(name)
-	if _, ok := ge.topics[name]; ok {
-		return ge.topics[name].publish(newInternalMessage(obj))
-	} else {
-		err := fmt.Errorf("topic '%s' does not exist", name)
-		ge.logger.Error(err)
-		return err
+// AddHandler adds a handler function for a specific topic.
+func (e *Engine) AddHandler(topic string, handler Handler) {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+
+	e.handlers[topic] = append(e.handlers[topic], handler)
+	e.logger.Printf("Added handler for topic: %s", topic)
+}
+
+// Publish publishes a message to a topic, broadcasting it to all subscribers
+// and calling the registered handlers for the topic.
+func (e *Engine) Publish(topic string, message interface{}) {
+	e.mu.RLock()
+	defer e.mu.RUnlock()
+
+	if subscribers, exists := e.subscribers[topic]; exists {
+		for ch := range subscribers {
+			go func(c chan interface{}) {
+				c <- message
+			}(ch)
+		}
+		e.logger.Printf("Published message to topic: %s", topic)
+	}
+
+	if handlers, exists := e.handlers[topic]; exists {
+		for _, handler := range handlers {
+			go handler(message)
+		}
 	}
 }

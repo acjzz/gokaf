@@ -2,152 +2,86 @@ package gokaf
 
 import (
 	"fmt"
-	"github.com/sirupsen/logrus"
-	"strings"
-	"sync"
 	"testing"
+	"time"
 )
 
-func TestEngine_Publish_Error(t *testing.T) {
-	topicName := "test"
-
-	type fields struct {
-		name     string
-		logLevel logrus.Level
-	}
-	type args struct {
-		name string
-		obj  interface{}
-	}
-	tests := []struct {
-		name       string
-		fields     fields
-		args       args
-		wantErr    bool
-		wantErrMsg string
-		startTopic bool
-	}{
-		{
-			"NoTopic",
-			fields{"testEngine", logrus.ErrorLevel},
-			args{topicName, "message"},
-			true,
-			fmt.Sprintf("topic '%s' does not exist", topicName),
-			false,
-		}, {
-			"TopicStopped",
-			fields{"testEngine", logrus.ErrorLevel},
-			args{topicName, "message"},
-			true,
-			"topic closed",
-			true,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			ge := NewEngine(
-				tt.fields.name,
-				tt.fields.logLevel,
-			)
-			if tt.startTopic {
-				ge.AddTopic(topicName, func(topic string, obj interface{}) {})
-				ge.Stop()
-			}
-			err := ge.Publish(tt.args.name, tt.args.obj)
-			if !tt.wantErr && err != nil {
-				t.Errorf("publish() not error, wantErr %v", tt.wantErr)
-			} else if err != nil {
-				ErrMsg := fmt.Sprintf("%v", err)
-				if strings.Compare(ErrMsg, tt.wantErrMsg) != 0 {
-					t.Errorf("publish() error = '%v', wantErr '%v'", ErrMsg, tt.wantErrMsg)
-				}
-			}
-			ge.Stop()
-		})
-	}
+// MockLogger is a simple mock implementation of the Logger interface for testing.
+type MockLogger struct {
+	Logs []string
 }
 
-func TestEngine_Publish(t *testing.T) {
-	testName := "publish & Consume"
-	t.Run(testName, func(t *testing.T) {
-		ge := NewEngine(testName, logrus.ErrorLevel)
+func (m *MockLogger) Printf(format string, v ...interface{}) {
+	fmt.Printf(format+"\n", v...)
+	message := fmt.Sprintf(format, v...)
+	m.Logs = append(m.Logs, message)
+}
 
-		topicName := "topic"
-		msg := "Test Message"
+func TestEngine(t *testing.T) {
+	// Create a mock logger for testing
+	mockLogger := &MockLogger{}
 
-		ge.AddTopic(topicName, func(topic string, obj interface{}) {
-			if strings.Compare(fmt.Sprintf("%v", obj), msg) != 0 {
-				t.Errorf("publish() received = '%v', expected '%v'", obj, msg)
-			} else if strings.Compare(topicName, topic) != 0 {
-				t.Errorf("publish() received from topic '%s', expected '%s'", topic, topicName)
-			}
-		})
+	// Create a new Engine with the mock logger
+	Engine := NewEngine(mockLogger)
 
-		err := ge.Publish(topicName, msg)
-		if err != nil {
-			t.Errorf("publish() error, wanted not Error\nError: %v", err)
+	// Create channels for subscribers
+	subscriber1 := make(chan interface{})
+	subscriber2 := make(chan interface{})
+
+	// Subscribe channels to topics
+	Engine.Subscribe("news", subscriber1)
+	Engine.Subscribe("sports", subscriber2)
+
+	// Register handlers for specific topics
+	Engine.AddHandler("news", func(message interface{}) {})
+	Engine.AddHandler("sports", func(message interface{}) {})
+
+	// Publish messages to topics
+	Engine.Publish("news", "Breaking news: Go is awesome!")
+	Engine.Publish("sports", map[string]int{"score": 42, "player": 7})
+
+	// Allow some time for messages to be processed
+	time.Sleep(100 * time.Millisecond)
+
+	// Check if logs contain expected entries
+	expectedLogs := []string{
+		"Subscribed channel to topic: news",
+		"Subscribed channel to topic: sports",
+		"Added handler for topic: news",
+		"Added handler for topic: sports",
+		"Published message to topic: news",
+		"Published message to topic: sports",
+	}
+	for i, expectedLog := range expectedLogs {
+		if i >= len(mockLogger.Logs) {
+			t.Errorf("Expected log entry missing: %s", expectedLog)
+			break
 		}
-		ge.Stop()
-	})
-}
-
-func TestEngine_Publish_Multiple_Topics(t *testing.T) {
-	baseTopicName := "topic"
-	baseMsg := "Test Message"
-
-	type Message struct {
-		topic   string
-		message string
+		if mockLogger.Logs[i] != expectedLog {
+			t.Errorf("Expected log entry mismatch: got %s, expected %s", mockLogger.Logs[i], expectedLog)
+		}
 	}
 
-	tests := []struct {
-		name         string
-		numTopics    int
-		numConsumers int
-	}{
-		{"Two topics", 2, 1},
-		{"Three topics twenty Consumers", 3, 20},
-		{"Five topics", 5, 1},
-		{"Five topics two Consumers", 5, 2},
-		{"Twenty topics five Consumers", 20, 5},
+	// Unsubscribe channels from topics
+	Engine.Unsubscribe("news", subscriber1)
+	Engine.Unsubscribe("sports", subscriber2)
+
+	// Allow some time for unsubscriptions to be processed
+	time.Sleep(100 * time.Millisecond)
+
+	// Check if logs contain expected unsubscription entries
+	expectedUnsubscribeLogs := []string{
+		"Unsubscribed channel from topic: news",
+		"Unsubscribed channel from topic: sports",
 	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			ge := NewEngine(tt.name, logrus.ErrorLevel)
-			for i := 0; i < tt.numTopics; i++ {
-				topicName := fmt.Sprintf("%s-%d", baseTopicName, i)
-				ge.AddTopic(topicName, func(topic string, obj interface{}) {
-					received := obj.(Message)
-					if strings.Compare(received.topic, topic) != 0 {
-						t.Errorf("publish() received from topic '%s', expected '%s'", received.topic, topicName)
-					}
-				}, tt.numConsumers)
-			}
-
-			var wg sync.WaitGroup
-			for i := 0; i < tt.numTopics-1; i++ {
-				wg.Add(1)
-				topicName := fmt.Sprintf("%s-%d", baseTopicName, i)
-				go func(topic string) {
-					msg := Message{topicName, baseMsg}
-					err := ge.Publish(topicName, msg)
-					if err != nil {
-						t.Errorf("publish() error, wanted not Error\nError: %v", err)
-					}
-					wg.Done()
-				}(topicName)
-			}
-			wg.Add(1)
-			topicName := fmt.Sprintf("%s-%d", baseTopicName, tt.numTopics-1)
-			msg := Message{topicName, baseMsg}
-			err := ge.Publish(topicName, msg)
-			if err != nil {
-				t.Errorf("publish() error, wanted not Error\nError: %v", err)
-			}
-			wg.Done()
-			wg.Wait()
-			ge.Stop()
-		})
+	for i, expectedLog := range expectedUnsubscribeLogs {
+		index := len(mockLogger.Logs) - len(expectedUnsubscribeLogs) + i
+		if index < 0 {
+			t.Errorf("Expected unsubscription log entry missing: %s", expectedLog)
+			break
+		}
+		if mockLogger.Logs[index] != expectedLog {
+			t.Errorf("Expected unsubscription log entry mismatch: got %s, expected %s", mockLogger.Logs[index], expectedLog)
+		}
 	}
 }
