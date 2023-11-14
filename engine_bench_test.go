@@ -5,15 +5,15 @@ import (
 	"testing"
 )
 
-type NullLogger struct {
+type nullLogger struct {
 }
 
-func (n *NullLogger) Printf(format string, v ...interface{}) {
+func (n *nullLogger) Printf(format string, v ...interface{}) {
 }
 
 func BenchmarkEngine(b *testing.B) {
 	// Create a new Engine
-	nullLogger := &NullLogger{}
+	nullLogger := &nullLogger{}
 
 	Engine := NewEngine(nullLogger)
 

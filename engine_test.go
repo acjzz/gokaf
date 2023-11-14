@@ -8,11 +8,11 @@ import (
 )
 
 // MockLogger is a simple mock implementation of the Logger interface for testing.
-type MockLogger struct {
+type mockLogger struct {
 	Logs []string
 }
 
-func (m *MockLogger) Printf(format string, v ...interface{}) {
+func (m *mockLogger) Printf(format string, v ...interface{}) {
 	fmt.Printf(format+"\n", v...)
 	message := fmt.Sprintf(format, v...)
 	m.Logs = append(m.Logs, message)
@@ -20,26 +20,26 @@ func (m *MockLogger) Printf(format string, v ...interface{}) {
 
 func TestEngine(t *testing.T) {
 	// Create a mock logger for testing
-	mockLogger := &MockLogger{}
+	ml := &mockLogger{}
 
 	// Create a new Engine with the mock logger
-	Engine := NewEngine(mockLogger)
+	e := NewEngine(ml)
 
 	// Create channels for subscribers
 	subscriber1 := make(chan interface{})
 	subscriber2 := make(chan interface{})
 
 	// Subscribe channels to topics
-	Engine.Subscribe("news", subscriber1)
-	Engine.Subscribe("sports", subscriber2)
+	e.Subscribe("news", subscriber1)
+	e.Subscribe("sports", subscriber2)
 
 	// Register handlers for specific topics
-	Engine.AddHandler("news", func(message interface{}) {})
-	Engine.AddHandler("sports", func(message interface{}) {})
+	e.AddHandler("news", func(message interface{}) {})
+	e.AddHandler("sports", func(message interface{}) {})
 
 	// Publish messages to topics
-	Engine.Publish("news", "Breaking news: Go is awesome!")
-	Engine.Publish("sports", map[string]int{"score": 42, "player": 7})
+	e.Publish("news", "Breaking news: Go is awesome!")
+	e.Publish("sports", map[string]int{"score": 42, "player": 7})
 
 	// Allow some time for messages to be processed
 	time.Sleep(100 * time.Millisecond)
@@ -54,18 +54,18 @@ func TestEngine(t *testing.T) {
 		"Published message to topic: sports",
 	}
 	for i, expectedLog := range expectedLogs {
-		if i >= len(mockLogger.Logs) {
+		if i >= len(ml.Logs) {
 			t.Errorf("Expected log entry missing: %s", expectedLog)
 			break
 		}
-		if mockLogger.Logs[i] != expectedLog {
-			t.Errorf("Expected log entry mismatch: got %s, expected %s", mockLogger.Logs[i], expectedLog)
+		if ml.Logs[i] != expectedLog {
+			t.Errorf("Expected log entry mismatch: got %s, expected %s", ml.Logs[i], expectedLog)
 		}
 	}
 
 	// Unsubscribe channels from topics
-	Engine.Unsubscribe("news", subscriber1)
-	Engine.Unsubscribe("sports", subscriber2)
+	e.Unsubscribe("news", subscriber1)
+	e.Unsubscribe("sports", subscriber2)
 
 	// Allow some time for unsubscriptions to be processed
 	time.Sleep(100 * time.Millisecond)
@@ -76,13 +76,13 @@ func TestEngine(t *testing.T) {
 		"Unsubscribed channel from topic: sports",
 	}
 	for i, expectedLog := range expectedUnsubscribeLogs {
-		index := len(mockLogger.Logs) - len(expectedUnsubscribeLogs) + i
+		index := len(ml.Logs) - len(expectedUnsubscribeLogs) + i
 		if index < 0 {
 			t.Errorf("Expected unsubscription log entry missing: %s", expectedLog)
 			break
 		}
-		if mockLogger.Logs[index] != expectedLog {
-			t.Errorf("Expected unsubscription log entry mismatch: got %s, expected %s", mockLogger.Logs[index], expectedLog)
+		if ml.Logs[index] != expectedLog {
+			t.Errorf("Expected unsubscription log entry mismatch: got %s, expected %s", ml.Logs[index], expectedLog)
 		}
 	}
 }
