@@ -15,3 +15,6 @@
 # vendor/
 
 .idea
+
+# Go Benchmarks output
+benchmark_output.txt

@@ -1,0 +1,6 @@
+test:
+	go test -timeout=3s -race -count=10 -failfast -shuffle=on -short ./...
+	go test -timeout=10s -race -count=1 -failfast  -shuffle=on ./...
+
+bench:
+	go test -bench=. -count 1 -benchtime=1s -run=^# -benchmem | tee benchmark_output.txt

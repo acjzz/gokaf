@@ -1,9 +1,11 @@
 name: test
+
 on:
   push:
     branches: [main]
     paths-ignore:
       - README.md
+      - LICENSE
       - '.github/**'
 
 permissions:
@@ -22,8 +24,7 @@ jobs:
           go-version-file: go.mod
       - name: Test
         run: |
-          go test -timeout=3s -race -count=10 -failfast -shuffle=on -short ./...
-          go test -timeout=10s -race -count=1 -failfast  -shuffle=on ./...
+          make test
       - name: Generate Test Coverage
         run: go test ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
       - name: Check Test Coverage
