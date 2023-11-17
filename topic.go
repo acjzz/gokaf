@@ -2,69 +2,53 @@ package gokaf
 
 import (
 	"context"
+	"fmt"
+	"log/slog"
+	"sync"
 )
 
-type Topic struct {
-	ctx       context.Context
-	ctxCancel context.CancelFunc
-	logger    LogWrapper
-	name      string
-	channel   chan internalMessage
-	consumers []*consumer
-	producer  *producer
-	handler   func(string, interface{})
+type topic struct {
+	ctx     context.Context
+	cancel  context.CancelFunc
+	logger  *slog.Logger
+	wg      sync.WaitGroup // Add a WaitGroup for synchronization
+	name    string
+	channel *topicChannel
 }
 
-func NewTopic(ctx context.Context, name string, handler func(string, interface{}), numConsumers ...int) *Topic {
-	var channelTopic chan internalMessage
-	if len(numConsumers) > 0 {
-		channelTopic = make(chan internalMessage, numConsumers[0])
-	} else {
-		channelTopic = make(chan internalMessage)
-	}
-	ctx = setTopicKey(ctx, name)
+// newTopic creates a new instance of topic.
+func newTopic(ctx context.Context, logger *slog.Logger, name string, bufferSize int) *topic {
 	ctx, cancel := context.WithCancel(ctx)
-	logger := NewLogrusLogger(ctx, getLogFields)
-	t := &Topic{
-		ctx,
-		cancel,
-		logger,
-		name,
-		channelTopic,
-		[]*consumer{},
-		newProducer(ctx, &channelTopic),
-		handler,
-	}
-	if len(numConsumers) > 0 {
-		t.addConsumers(numConsumers[0])
-	} else {
-		t.addConsumer()
-	}
-	return t
+
+	channel := newTopicChannel(bufferSize)
+
+	t := topic{ctx, cancel, logger, sync.WaitGroup{}, name, channel}
+
+	t.wg.Add(1) // Increment the WaitGroup counter
+	return &t
 }
 
-func (t *Topic) stop() {
-	t.logger.Warn("stop")
-	t.ctxCancel()
+func (t *topic) close() {
+	defer t.wg.Done() // Decrement the WaitGroup counter when the goroutine completes
+	defer t.channel.Close()
+	// Shutdown. Cancel application context will kill all attached tasks.
+	t.logger.Warn(fmt.Sprintf("Topic %s closed", t.name))
+	t.cancel()
 }
 
-func (t *Topic) addConsumer() {
-	ctx := setConsumerKey(t.ctx, len(t.consumers))
-	t.consumers = append(t.consumers, newConsumer(ctx, &t.channel, t.handler))
-}
-
-func (t *Topic) addConsumers(num int) {
-	for i := 0; i < num; i += 1 {
-		t.addConsumer()
-	}
-}
-
-func (t *Topic) publish(message internalMessage) error {
-	return t.producer.publish(message)
-}
-
-func (t *Topic) run() {
-	for _, c := range t.consumers {
-		c.run()
+func (t *topic) publish(msg interface{}) error {
+	select {
+	case <-t.ctx.Done():
+		errorMsg := fmt.Sprintf("Topic %s is already closed", t.name)
+		t.logger.Warn(errorMsg)
+		return fmt.Errorf(errorMsg)
+	default:
+		if t.channel.IsClosed() {
+			e := newTopicClosedError(t.name)
+			t.logger.Warn(e.Error())
+			return e
+		}
+		t.channel.ch <- msg
+		return nil
 	}
 }
