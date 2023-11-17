@@ -1,5 +1,5 @@
-/* 
-gokaf is a robust in-memory pubsub engine meticulously crafted to provide seamless and nearly real-time data streams. 
+/*
+gokaf is a robust in-memory pubsub engine meticulously crafted to provide seamless and nearly real-time data streams.
 */
 package gokaf
 

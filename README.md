@@ -10,10 +10,10 @@
 
 ## Overview
 
-`gokaf` is a robust in-memory pubsub engine meticulously crafted to provide seamless and nearly real-time data streams. 
+`gokaf` is a robust in-memory pubsub engine meticulously crafted to provide seamless and nearly real-time data streams.
 
-This module is strategically constructed on the foundation of Golang channels, employing a highly efficient pubsub messaging approach. 
+This module is strategically constructed on the foundation of Golang channels, employing a highly efficient pubsub messaging approach.
 
-By harnessing the inherent simplicity and concurrency features of Golang, gokaf excels in real-time message processing, offering an agile and responsive solution for applications with low-latency requirements in memory data processing. 
+By harnessing the inherent simplicity and concurrency features of Golang, gokaf excels in real-time message processing, offering an agile and responsive solution for applications with low-latency requirements in memory data processing.
 
 The design principles of gokaf are centered around optimal performance.
