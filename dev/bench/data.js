@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1700221890745,
+  "lastUpdate": 1700229365362,
   "repoUrl": "https://github.com/acjzz/gokaf",
   "entries": {
     "Gokaf Benchmark": [
@@ -672,6 +672,678 @@ window.BENCHMARK_DATA = {
             "value": 3,
             "unit": "allocs/op",
             "extra": "58934 times\n2 procs"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "jordiarnavat@gmail.com",
+            "name": "acjzz",
+            "username": "acjzz"
+          },
+          "committer": {
+            "email": "jordiarnavat@gmail.com",
+            "name": "acjzz",
+            "username": "acjzz"
+          },
+          "distinct": true,
+          "id": "58ee2946d13bacfe39f30f4aefb51fcfd2703c89",
+          "message": "improve documentation",
+          "timestamp": "2023-11-17T17:54:38+04:00",
+          "tree_id": "22b3bfdc86537ac617691129fdefbb04dcf1f1a5",
+          "url": "https://github.com/acjzz/gokaf/commit/58ee2946d13bacfe39f30f4aefb51fcfd2703c89"
+        },
+        "date": 1700229364771,
+        "tool": "go",
+        "benches": [
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_0k - ns/op",
+            "value": 2787,
+            "unit": "ns/op",
+            "extra": "463846 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_0k - B/op",
+            "value": 2141,
+            "unit": "B/op",
+            "extra": "463846 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_0k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "463846 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_0k - ns/op",
+            "value": 2723,
+            "unit": "ns/op",
+            "extra": "557658 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_0k - B/op",
+            "value": 2098,
+            "unit": "B/op",
+            "extra": "557658 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_0k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "557658 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_0k - ns/op",
+            "value": 1911,
+            "unit": "ns/op",
+            "extra": "971938 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_0k - B/op",
+            "value": 2143,
+            "unit": "B/op",
+            "extra": "971938 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_0k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "971938 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_0k - ns/op",
+            "value": 2007,
+            "unit": "ns/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_0k - B/op",
+            "value": 2123,
+            "unit": "B/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_0k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_2k - ns/op",
+            "value": 2916,
+            "unit": "ns/op",
+            "extra": "811706 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_2k - B/op",
+            "value": 2096,
+            "unit": "B/op",
+            "extra": "811706 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_2k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "811706 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_2k - ns/op",
+            "value": 2946,
+            "unit": "ns/op",
+            "extra": "927748 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_2k - B/op",
+            "value": 2096,
+            "unit": "B/op",
+            "extra": "927748 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_2k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "927748 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_2k - ns/op",
+            "value": 1978,
+            "unit": "ns/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_2k - B/op",
+            "value": 2114,
+            "unit": "B/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_2k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_2k - ns/op",
+            "value": 1996,
+            "unit": "ns/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_2k - B/op",
+            "value": 2117,
+            "unit": "B/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_2k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_8k - ns/op",
+            "value": 3105,
+            "unit": "ns/op",
+            "extra": "807951 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_8k - B/op",
+            "value": 2096,
+            "unit": "B/op",
+            "extra": "807951 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_8k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "807951 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_8k - ns/op",
+            "value": 3156,
+            "unit": "ns/op",
+            "extra": "730508 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_8k - B/op",
+            "value": 2096,
+            "unit": "B/op",
+            "extra": "730508 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_8k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "730508 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_8k - ns/op",
+            "value": 2101,
+            "unit": "ns/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_8k - B/op",
+            "value": 2123,
+            "unit": "B/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_8k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_8k - ns/op",
+            "value": 1949,
+            "unit": "ns/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_8k - B/op",
+            "value": 2107,
+            "unit": "B/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_8k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "1000000 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_0k - ns/op",
+            "value": 20987,
+            "unit": "ns/op",
+            "extra": "62121 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_0k - B/op",
+            "value": 32816,
+            "unit": "B/op",
+            "extra": "62121 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_0k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "62121 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_0k - ns/op",
+            "value": 20123,
+            "unit": "ns/op",
+            "extra": "59634 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_0k - B/op",
+            "value": 32816,
+            "unit": "B/op",
+            "extra": "59634 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_0k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "59634 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_0k - ns/op",
+            "value": 8489,
+            "unit": "ns/op",
+            "extra": "122764 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_0k - B/op",
+            "value": 32861,
+            "unit": "B/op",
+            "extra": "122764 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_0k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "122764 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_0k - ns/op",
+            "value": 9808,
+            "unit": "ns/op",
+            "extra": "172125 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_0k - B/op",
+            "value": 32866,
+            "unit": "B/op",
+            "extra": "172125 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_0k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "172125 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_2k - ns/op",
+            "value": 12692,
+            "unit": "ns/op",
+            "extra": "86701 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_2k - B/op",
+            "value": 32816,
+            "unit": "B/op",
+            "extra": "86701 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_2k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "86701 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_2k - ns/op",
+            "value": 13381,
+            "unit": "ns/op",
+            "extra": "87366 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_2k - B/op",
+            "value": 32816,
+            "unit": "B/op",
+            "extra": "87366 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_2k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "87366 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_2k - ns/op",
+            "value": 9055,
+            "unit": "ns/op",
+            "extra": "120991 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_2k - B/op",
+            "value": 32825,
+            "unit": "B/op",
+            "extra": "120991 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_2k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "120991 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_2k - ns/op",
+            "value": 8643,
+            "unit": "ns/op",
+            "extra": "124378 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_2k - B/op",
+            "value": 32834,
+            "unit": "B/op",
+            "extra": "124378 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_2k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "124378 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_8k - ns/op",
+            "value": 13151,
+            "unit": "ns/op",
+            "extra": "106197 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_8k - B/op",
+            "value": 32816,
+            "unit": "B/op",
+            "extra": "106197 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_8k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "106197 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_8k - ns/op",
+            "value": 12371,
+            "unit": "ns/op",
+            "extra": "111856 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_8k - B/op",
+            "value": 32816,
+            "unit": "B/op",
+            "extra": "111856 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_8k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "111856 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_8k - ns/op",
+            "value": 8904,
+            "unit": "ns/op",
+            "extra": "121533 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_8k - B/op",
+            "value": 32857,
+            "unit": "B/op",
+            "extra": "121533 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_8k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "121533 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_8k - ns/op",
+            "value": 7178,
+            "unit": "ns/op",
+            "extra": "177394 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_8k - B/op",
+            "value": 32849,
+            "unit": "B/op",
+            "extra": "177394 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_8k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "177394 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_0k - ns/op",
+            "value": 33312,
+            "unit": "ns/op",
+            "extra": "38656 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_0k - B/op",
+            "value": 131120,
+            "unit": "B/op",
+            "extra": "38656 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_0k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "38656 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_0k - ns/op",
+            "value": 32351,
+            "unit": "ns/op",
+            "extra": "36799 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_0k - B/op",
+            "value": 131120,
+            "unit": "B/op",
+            "extra": "36799 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_0k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "36799 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_0k - ns/op",
+            "value": 19283,
+            "unit": "ns/op",
+            "extra": "55804 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_0k - B/op",
+            "value": 131125,
+            "unit": "B/op",
+            "extra": "55804 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_0k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "55804 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_0k - ns/op",
+            "value": 18795,
+            "unit": "ns/op",
+            "extra": "59064 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_0k - B/op",
+            "value": 131152,
+            "unit": "B/op",
+            "extra": "59064 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_0k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "59064 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_2k - ns/op",
+            "value": 30963,
+            "unit": "ns/op",
+            "extra": "40170 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_2k - B/op",
+            "value": 131120,
+            "unit": "B/op",
+            "extra": "40170 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_2k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "40170 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_2k - ns/op",
+            "value": 32935,
+            "unit": "ns/op",
+            "extra": "35487 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_2k - B/op",
+            "value": 131120,
+            "unit": "B/op",
+            "extra": "35487 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_2k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "35487 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_2k - ns/op",
+            "value": 23012,
+            "unit": "ns/op",
+            "extra": "57027 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_2k - B/op",
+            "value": 131123,
+            "unit": "B/op",
+            "extra": "57027 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_2k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "57027 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_2k - ns/op",
+            "value": 15901,
+            "unit": "ns/op",
+            "extra": "66423 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_2k - B/op",
+            "value": 131197,
+            "unit": "B/op",
+            "extra": "66423 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_2k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "66423 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_8k - ns/op",
+            "value": 66478,
+            "unit": "ns/op",
+            "extra": "18618 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_8k - B/op",
+            "value": 131120,
+            "unit": "B/op",
+            "extra": "18618 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_8k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "18618 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_8k - ns/op",
+            "value": 33517,
+            "unit": "ns/op",
+            "extra": "34870 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_8k - B/op",
+            "value": 131120,
+            "unit": "B/op",
+            "extra": "34870 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_8k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "34870 times"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_8k - ns/op",
+            "value": 24060,
+            "unit": "ns/op",
+            "extra": "56918 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_8k - B/op",
+            "value": 131124,
+            "unit": "B/op",
+            "extra": "56918 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_8k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "56918 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_8k - ns/op",
+            "value": 17689,
+            "unit": "ns/op",
+            "extra": "61232 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_8k - B/op",
+            "value": 131190,
+            "unit": "B/op",
+            "extra": "61232 times\n2 procs"
+          },
+          {
+            "name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_8k - allocs/op",
+            "value": 3,
+            "unit": "allocs/op",
+            "extra": "61232 times\n2 procs"
           }
         ]
       }
