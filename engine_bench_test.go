@@ -34,7 +34,7 @@ func BenchmarkEngine(b *testing.B) {
 				topicName := "BenchTopic"
 				_ = engine.RegisterTopic(topicName, bts.input)
 
-				counter := &Counter{}
+				counter := &counter{}
 
 				done := make(chan struct{})
 				mockHandler := func(receivedMsg interface{}) {

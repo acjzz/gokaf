@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// Consumer struct represents a subscriber in the pubsub system.
 type Consumer struct {
 	id      uuid.UUID
 	ctx     context.Context
@@ -28,13 +29,15 @@ func newConsumer(topic *topic, logger *slog.Logger, handler func(interface{})) *
 	return &c
 }
 
-func (c *Consumer) Close() {
+// Stop stops the consumer, terminating its message processing loop and releasing associated resources.
+func (c *Consumer) Stop() {
 	defer c.wg.Done() // Decrement the WaitGroup counter when the goroutine completes
 	// Shutdown. Cancel application context will kill all attached tasks.
 	c.logger.Warn(fmt.Sprintf("Consumer[%s] for topic %s close", c.id, c.topic.name))
 	c.cancel()
 }
 
+// Run initiates the consumer's message consumption process by starting a goroutine.
 func (c *Consumer) Run() {
 	go func() {
 		for {

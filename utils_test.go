@@ -7,7 +7,7 @@ import (
 
 func TestCounter(t *testing.T) {
 	t.Run("Increment", func(t *testing.T) {
-		counter := &Counter{}
+		counter := &counter{}
 		counter.Increment()
 
 		expected := 1
@@ -17,7 +17,7 @@ func TestCounter(t *testing.T) {
 	})
 
 	t.Run("Decrement", func(t *testing.T) {
-		counter := &Counter{}
+		counter := &counter{}
 		counter.Decrement()
 
 		expected := -1
@@ -27,7 +27,7 @@ func TestCounter(t *testing.T) {
 	})
 
 	t.Run("ConcurrentIncrementDecrement", func(t *testing.T) {
-		counter := &Counter{}
+		counter := &counter{}
 		var wg sync.WaitGroup
 		numIterations := 1000
 

@@ -17,7 +17,7 @@ func TestConsumerClose(t *testing.T) {
 
 	// Test: Consumer close
 	t.Run("ConsumerClose", func(t *testing.T) {
-		consumer.Close()
+		consumer.Stop()
 
 		// Wait for the Consumer to finish closing (WaitGroup counter to reach zero)
 		done := make(chan struct{})
@@ -96,7 +96,7 @@ func TestConsumerStopAfterRun(t *testing.T) {
 
 		select {
 		case <-done:
-			consumer.Close()
+			consumer.Stop()
 			consumer.wg.Wait()
 		case <-time.After(time.Second):
 			t.Error("Timed out waiting for consumer to close")

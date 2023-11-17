@@ -1,3 +1,6 @@
+/* 
+gokaf is a robust in-memory pubsub engine meticulously crafted to provide seamless and nearly real-time data streams. 
+*/
 package gokaf
 
 import (
@@ -10,6 +13,7 @@ import (
 	"syscall"
 )
 
+// Engine struct represents the core of a pubsub system, managing topics and their associated consumers.
 type Engine struct {
 	ctx      context.Context
 	cancel   context.CancelFunc
@@ -20,7 +24,7 @@ type Engine struct {
 	muTopics sync.RWMutex
 }
 
-// NewEngine creates a new instance of the Engine.
+// NewEngine creates a new Engine instance, initializing the necessary components for the pubsub system.
 func NewEngine(logger *slog.Logger) *Engine {
 	ctx, cancel := context.WithCancel(context.Background())
 
@@ -55,6 +59,7 @@ func NewEngine(logger *slog.Logger) *Engine {
 	return &e
 }
 
+// Stop terminates the pubsub engine, initiating a graceful shutdown process.
 func (e *Engine) Stop() {
 	defer e.wg.Done() // Decrement the WaitGroup counter when the goroutine completes
 
@@ -63,7 +68,7 @@ func (e *Engine) Stop() {
 	e.cancel()
 }
 
-// TopicExists checks if a topic exists in the engine
+// TopicExists checks if a specified topic exists within the pubsub engine.
 func (e *Engine) TopicExists(topicName string) bool {
 	e.muTopics.RLock()
 	defer e.muTopics.RUnlock()
@@ -72,7 +77,7 @@ func (e *Engine) TopicExists(topicName string) bool {
 	return exists
 }
 
-// RegisterTopic registers a topic in the engine
+// RegisterTopic creates and registers a new topic within the pubsub engine with the specified name and buffer size.
 func (e *Engine) RegisterTopic(topicName string, bufferSize int) error {
 	if e.TopicExists(topicName) {
 		return newTopicExistsError(topicName)
@@ -84,7 +89,7 @@ func (e *Engine) RegisterTopic(topicName string, bufferSize int) error {
 	return nil
 }
 
-// RegisterTopic registers a topic in the engine
+// GetProducer retrieves or creates a new producer associated with the specified topic in the pubsub engine.
 func (e *Engine) GetProducer(topicName string) (*Producer, error) {
 	if !e.TopicExists(topicName) {
 		return nil, newTopicExistsError(topicName)
@@ -93,7 +98,7 @@ func (e *Engine) GetProducer(topicName string) (*Producer, error) {
 	return newProducer(topic, e.logger), nil
 }
 
-// RegisterTopic registers a topic in the engine
+// GetConsumer retrieves or creates a new consumer associated with the specified topic in the pubsub engine.
 func (e *Engine) GetConsumer(topicName string, handler func(interface{})) (*Consumer, error) {
 	if !e.TopicExists(topicName) {
 		return nil, newTopicExistsError(topicName)

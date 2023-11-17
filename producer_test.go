@@ -14,7 +14,7 @@ func TestProducerClose(t *testing.T) {
 
 	// Test: Producer close
 	t.Run("ProducerClose", func(t *testing.T) {
-		producer.Close()
+		producer.Stop()
 
 		// Wait for the producer to finish closing (WaitGroup counter to reach zero)
 		done := make(chan struct{})
@@ -58,7 +58,7 @@ func TestProducerPublish(t *testing.T) {
 		t.Errorf("Error publishing message1: %v", err)
 	}
 
-	producer.Close()
+	producer.Stop()
 	producer.wg.Wait()
 
 	topic.close()
