@@ -1,153 +1,259 @@
 package gokaf
 
 import (
-	"fmt"
-	"github.com/sirupsen/logrus"
-	"strings"
-	"sync"
+	"os"
 	"testing"
+	"time"
 )
 
-func TestEngine_Publish_Error(t *testing.T) {
-	topicName := "test"
+func TestEngineStop(t *testing.T) {
+	// Create a new Engine with a mock logger
+	engine := NewEngine(mockLogger)
 
-	type fields struct {
-		name     string
-		logLevel logrus.Level
-	}
-	type args struct {
-		name string
-		obj  interface{}
-	}
-	tests := []struct {
-		name       string
-		fields     fields
-		args       args
-		wantErr    bool
-		wantErrMsg string
-		startTopic bool
-	}{
-		{
-			"NoTopic",
-			fields{"testEngine", logrus.ErrorLevel},
-			args{topicName, "message"},
-			true,
-			fmt.Sprintf("topic '%s' does not exist", topicName),
-			false,
-		}, {
-			"TopicStopped",
-			fields{"testEngine", logrus.ErrorLevel},
-			args{topicName, "message"},
-			true,
-			"topic closed",
-			true,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			ge := NewEngine(
-				tt.fields.name,
-				tt.fields.logLevel,
-			)
-			if tt.startTopic {
-				ge.AddTopic(topicName, func(topic string, obj interface{}) {})
-				ge.Stop()
-			}
-			err := ge.Publish(tt.args.name, tt.args.obj)
-			if !tt.wantErr && err != nil {
-				t.Errorf("publish() not error, wantErr %v", tt.wantErr)
-			} else if err != nil {
-				ErrMsg := fmt.Sprintf("%v", err)
-				if strings.Compare(ErrMsg, tt.wantErrMsg) != 0 {
-					t.Errorf("publish() error = '%v', wantErr '%v'", ErrMsg, tt.wantErrMsg)
-				}
-			}
-			ge.Stop()
-		})
+	// Simulate an interrupt signal to trigger the Stop method
+	go func() {
+		time.Sleep(100 * time.Millisecond)
+		engine.Stop()
+	}()
+
+	engine.wg.Wait()
+
+	// Check if the logger was called with the expected message
+	expectedMsg := "Engine Shutting Down"
+	logs := getMockLogs()
+	last := logs[len(logs)-1]
+
+	if last != expectedMsg {
+		t.Errorf("Expected log message: %s, got: %s", expectedMsg, last)
 	}
 }
 
-func TestEngine_Publish(t *testing.T) {
-	testName := "publish & Consume"
-	t.Run(testName, func(t *testing.T) {
-		ge := NewEngine(testName, logrus.ErrorLevel)
+func TestInterruptSignalHandling(t *testing.T) {
+	// Create a new Engine with a mock logger
+	engine := NewEngine(mockLogger)
 
-		topicName := "topic"
-		msg := "Test Message"
+	// Simulate sending a kill signal to the Engine after a short delay
+	go func() {
+		time.Sleep(100 * time.Millisecond)
+		engine.sigChan <- os.Interrupt
+	}()
 
-		ge.AddTopic(topicName, func(topic string, obj interface{}) {
-			if strings.Compare(fmt.Sprintf("%v", obj), msg) != 0 {
-				t.Errorf("publish() received = '%v', expected '%v'", obj, msg)
-			} else if strings.Compare(topicName, topic) != 0 {
-				t.Errorf("publish() received from topic '%s', expected '%s'", topic, topicName)
-			}
-		})
+	engine.wg.Wait()
 
-		err := ge.Publish(topicName, msg)
-		if err != nil {
-			t.Errorf("publish() error, wanted not Error\nError: %v", err)
+	// Check if the logger was called with the expected message
+	logs := getMockLogs()
+
+	expectedMsg := "Received signal: interrupt"
+	secondLast := logs[len(logs)-2]
+
+	if secondLast != expectedMsg {
+		t.Errorf("Expected log message: %s, got: %s", expectedMsg, secondLast)
+	}
+
+	expectedMsg = "Engine Shutting Down"
+	last := logs[len(logs)-1]
+
+	if last != expectedMsg {
+		t.Errorf("Expected log message: %s, got: %s", expectedMsg, last)
+	}
+}
+
+func TestTopicExists(t *testing.T) {
+	engine := NewEngine(mockLogger)
+
+	// Example: Register a topic
+	topicName := "exampleTopic"
+	err := engine.RegisterTopic(topicName, 0)
+
+	if err != nil {
+		t.Errorf("Unexpected error while registering a new topic: %v", err)
+	}
+	// Test: Check if a topic exists
+	t.Run("ExistingTopic", func(t *testing.T) {
+		if !engine.TopicExists(topicName) {
+			t.Error("Expected the topic to exist, but it doesn't.")
 		}
-		ge.Stop()
+	})
+
+	// Test: Check if nonExistingTopic exists
+	t.Run("NonExistingTopic", func(t *testing.T) {
+		if engine.TopicExists("nonExistingTopic") {
+			t.Error("Expected the topic not to exist, but it does.")
+		}
 	})
 }
 
-func TestEngine_Publish_Multiple_Topics(t *testing.T) {
-	baseTopicName := "topic"
-	baseMsg := "Test Message"
+func TestRegisterTopic(t *testing.T) {
+	engine := NewEngine(mockLogger)
 
-	type Message struct {
-		topic   string
-		message string
+	// Test: Register a new topic
+	t.Run("RegisterNewTopic", func(t *testing.T) {
+		topicName := "newTopic"
+		err := engine.RegisterTopic(topicName, 0)
+
+		if err != nil {
+			t.Errorf("Unexpected error while registering a new topic: %v", err)
+		}
+
+		if !engine.TopicExists(topicName) {
+			t.Error("Expected the newly registered topic to exist, but it doesn't.")
+		}
+	})
+
+	// Test: Attempt to register an existing topic
+	t.Run("RegisterExistingTopic", func(t *testing.T) {
+		topicName := "existingTopic"
+		err := engine.RegisterTopic(topicName, 0)
+
+		if err != nil {
+			t.Errorf("Unexpected error while registering a new topic: %v", err)
+		}
+
+		err = engine.RegisterTopic(topicName, 0)
+
+		if err == nil {
+			t.Error("Expected an error when attempting to register an existing topic, but got nil.")
+		}
+
+		expectedError := newTopicExistsError(topicName).Error()
+		if err.Error() != expectedError {
+			t.Errorf("Expected error message '%s', but got '%s'", expectedError, err.Error())
+		}
+	})
+}
+
+func TestGetProducer(t *testing.T) {
+	// Create a new instance of your Engine
+	engine := NewEngine(mockLogger)
+
+	t.Run("GetProducerNoneExistingTopic", func(t *testing.T) {
+		// Test case 1: Non-existing topic
+		topicName := "nonexistentTopic"
+		producer1, err1 := engine.GetProducer(topicName)
+
+		if err1 == nil {
+			t.Errorf("Unexpected error for non-existing topic: %v", err1)
+		}
+
+		if producer1 != nil {
+			t.Error("Expected a nil producer for non-existing topic, but got non-nil")
+		}
+	})
+
+	t.Run("GetProducerExistingTopic", func(t *testing.T) {
+		// Test case 2: Existing topic
+		existingTopic := "existingTopic"
+
+		err := engine.RegisterTopic(existingTopic, 0)
+
+		if err != nil {
+			t.Errorf("Unexpected error while registering a new topic: %v", err)
+		}
+
+		producer2, err2 := engine.GetProducer(existingTopic)
+
+		if err2 != nil {
+			t.Errorf("Expected error for existing topic %s: %v", existingTopic, err2)
+		}
+
+		if producer2 == nil {
+			t.Error("Expected a producer for existing topic, but got nil")
+		}
+	})
+}
+
+func TestGetConsumer(t *testing.T) {
+	// Create a new instance of your Engine
+	engine := NewEngine(mockLogger)
+
+	// Mock handler function for the consumer
+	mockHandler := func(interface{}) {}
+
+	t.Run("GetConsumerNoneExistingTopic", func(t *testing.T) {
+		// Test case 1: Non-existing topic
+		topicName := "nonexistentTopic"
+
+		consumer1, err1 := engine.GetConsumer(topicName, mockHandler)
+
+		if err1 == nil {
+			t.Errorf("Unexpected error for non-existing topic: %v", err1)
+		}
+
+		if consumer1 != nil {
+			t.Error("Expected a nil consumer for non-existing topic, but got non-nil")
+		}
+	})
+
+	t.Run("GetConsumerExistingTopic", func(t *testing.T) {
+		// Test case 2: Existing topic
+		existingTopic := "existingTopic"
+
+		err := engine.RegisterTopic(existingTopic, 0)
+
+		if err != nil {
+			t.Errorf("Unexpected error while registering a new topic: %v", err)
+		}
+
+		consumer2, err2 := engine.GetConsumer(existingTopic, mockHandler)
+
+		if err2 != nil {
+			t.Errorf("Expected error for existing topic %s: %v", existingTopic, err2)
+		}
+
+		if consumer2 == nil {
+			t.Error("Expected a consumer for existing topic, but got nil")
+		}
+	})
+}
+
+func TestProducerConsumer(t *testing.T) {
+	// Create a new instance of your Engine
+	engine := NewEngine(mockLogger)
+
+	topicName := "testTopic"
+	err := engine.RegisterTopic(topicName, 0)
+
+	if err != nil {
+		t.Errorf("Unexpected error while registering a new topic: %v", err)
 	}
 
-	tests := []struct {
-		name         string
-		numTopics    int
-		numConsumers int
-	}{
-		{"Two topics", 2, 1},
-		{"Three topics twenty Consumers", 3, 20},
-		{"Five topics", 5, 1},
-		{"Five topics two Consumers", 5, 2},
-		{"Twenty topics five Consumers", 20, 5},
+	sentMsg := "Go is awesome"
+	done := make(chan struct{})
+
+	// Mock handler function for the consumer
+	mockHandler := func(receivedMsg interface{}) {
+		defer close(done)
+		if receivedMsg != sentMsg {
+			t.Errorf("Expected message %v, got %v", sentMsg, receivedMsg)
+		}
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			ge := NewEngine(tt.name, logrus.ErrorLevel)
-			for i := 0; i < tt.numTopics; i++ {
-				topicName := fmt.Sprintf("%s-%d", baseTopicName, i)
-				ge.AddTopic(topicName, func(topic string, obj interface{}) {
-					received := obj.(Message)
-					if strings.Compare(received.topic, topic) != 0 {
-						t.Errorf("publish() received from topic '%s', expected '%s'", received.topic, topicName)
-					}
-				}, tt.numConsumers)
-			}
+	consumer, err1 := engine.GetConsumer(topicName, mockHandler)
 
-			var wg sync.WaitGroup
-			for i := 0; i < tt.numTopics-1; i++ {
-				wg.Add(1)
-				topicName := fmt.Sprintf("%s-%d", baseTopicName, i)
-				go func(topic string) {
-					msg := Message{topicName, baseMsg}
-					err := ge.Publish(topicName, msg)
-					if err != nil {
-						t.Errorf("publish() error, wanted not Error\nError: %v", err)
-					}
-					wg.Done()
-				}(topicName)
-			}
-			wg.Add(1)
-			topicName := fmt.Sprintf("%s-%d", baseTopicName, tt.numTopics-1)
-			msg := Message{topicName, baseMsg}
-			err := ge.Publish(topicName, msg)
-			if err != nil {
-				t.Errorf("publish() error, wanted not Error\nError: %v", err)
-			}
-			wg.Done()
-			wg.Wait()
-			ge.Stop()
-		})
+	if err1 != nil {
+		t.Errorf("Unexpected error while getting a consumer for topic %s: %v", topicName, err1)
+	}
+
+	producer, err2 := engine.GetProducer(topicName)
+
+	if err2 != nil {
+		t.Errorf("Unexpected error while getting a producer for topic %s: %v", topicName, err2)
+	}
+
+	consumer.Run()
+
+	go func() {
+		err3 := producer.Publish(sentMsg)
+
+		if err3 != nil {
+			t.Errorf("Error publishing message1: %v", err3)
+		}
+	}()
+
+	select {
+	case <-done:
+		// The consumer has finished closing
+	case <-time.After(time.Second):
+		t.Error("Timed out waiting for consumer to close")
 	}
 }
