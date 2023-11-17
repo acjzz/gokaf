@@ -16,7 +16,7 @@ permissions:
 jobs:
   benchmark:
     name: Performance Regression Check
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
