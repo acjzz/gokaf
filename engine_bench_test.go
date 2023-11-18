@@ -1,4 +1,3 @@
-// Gokaf is a simple In-memory PubSub Engine
 package gokaf
 
 import (
