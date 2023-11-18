@@ -85,6 +85,7 @@ jobs:
           GO_TEST_FLAGS: -cpu 1,2
           PUBLISH: true
           PUBLISH_BRANCH: gh-pages
+          BENCHMARKS_OUT: bench/results.json
         env:
           GITHUB_TOKEN: ${{ github.ref_name == 'main' && secrets.GITHUB_TOKEN || '' }}
 
