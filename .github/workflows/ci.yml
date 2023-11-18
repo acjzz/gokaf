@@ -1,0 +1,109 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - README.md
+      - LICENSE
+      - '.github/**'
+
+concurrency:
+  # For pull requests, cancel all currently-running jobs for this workflow
+  # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#concurrency
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  # deployments permission to deploy GitHub pages website
+  deployments: write
+  # contents permission to update benchmark contents in gh-pages branch
+  contents: write
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup Go
+      uses: actions/setup-go@v4
+      with:
+        go-version-file: go.mod
+    - name: Install Golang pre-commit dependencies
+      run: |
+        go install golang.org/x/tools/cmd/goimports@latest
+        go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
+        curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.55.2
+        go install -v github.com/go-critic/go-critic/cmd/gocritic@latest
+    - name: Setup Python v3
+      uses: actions/setup-python@v4
+    - name: Run pre-commit
+      uses: pre-commit/action@v3.0.0
+
+  test:
+    name: Test Coverage
+    needs:
+      - pre-commit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: go.mod
+      - name: Test
+        run: |
+          make test
+      - name: Generate Test Coverage
+        run: go test ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
+      - name: Check Test Coverage
+        uses: vladopajic/go-test-coverage@v2
+        with:
+          config: ./.github/.testcoverage.yml
+          git-branch: badges
+          git-token: ${{ github.ref_name == 'main' && secrets.GITHUB_TOKEN || '' }}
+
+  benchmark:
+    name: Performance Regression Check
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    needs:
+      - pre-commit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v4
+        with:
+            go-version-file: go.mod
+      - name: gobenchdata publish
+        run: go run go.bobheadxi.dev/gobenchdata@v1 action
+        env:
+          GITHUB_TOKEN: ${{ github.ref_name == 'main' && secrets.GITHUB_TOKEN || '' }}
+          # Instead of 'with: ...', provide environment variables and
+          # prefix each input variable with 'INPUT'
+          INPUT_PRUNE_COUNT: 30
+          INPUT_GO_TEST_FLAGS: -cpu 1,2
+          INPUT_PUBLISH: true
+          INPUT_PUBLISH_BRANCH: gh-pages
+
+  release:
+    name: Semantic Release
+    if: github.ref_name == 'main'
+    needs:
+      - test
+      - benchmark
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: go.mod
+      - name: Semantic Release
+        uses: go-semantic-release/action@v1
+        with:
+          github-token: ${{ github.ref_name == 'main' && secrets.GITHUB_TOKEN || '' }}
