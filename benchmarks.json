@@ -1,0 +1,198 @@
+[
+  {
+    "Version": "4db8d9537a975fa99f0f03a48bb15971e268016c",
+    "Date": 1700319573,
+    "Tags": [
+      "ref=refs/heads/main"
+    ],
+    "Suites": [
+      {
+        "Goos": "linux",
+        "Goarch": "amd64",
+        "Pkg": "github.com/acjzz/gokaf",
+        "Benchmarks": [
+          {
+            "Name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_0k",
+            "Runs": 438214,
+            "NsPerOp": 2647,
+            "Mem": {
+              "BytesPerOp": 2151,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_0k-2",
+            "Runs": 1000000,
+            "NsPerOp": 1950,
+            "Mem": {
+              "BytesPerOp": 2141,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_2k",
+            "Runs": 1000000,
+            "NsPerOp": 2638,
+            "Mem": {
+              "BytesPerOp": 2096,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_2k-2",
+            "Runs": 1000000,
+            "NsPerOp": 1910,
+            "Mem": {
+              "BytesPerOp": 2119,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_8k",
+            "Runs": 969391,
+            "NsPerOp": 2717,
+            "Mem": {
+              "BytesPerOp": 2096,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_2k/buffer_topic_8k-2",
+            "Runs": 1000000,
+            "NsPerOp": 1717,
+            "Mem": {
+              "BytesPerOp": 2105,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_0k",
+            "Runs": 76490,
+            "NsPerOp": 19015,
+            "Mem": {
+              "BytesPerOp": 32816,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_0k-2",
+            "Runs": 174451,
+            "NsPerOp": 6199,
+            "Mem": {
+              "BytesPerOp": 32865,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_2k",
+            "Runs": 75842,
+            "NsPerOp": 20130,
+            "Mem": {
+              "BytesPerOp": 32816,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_2k-2",
+            "Runs": 130268,
+            "NsPerOp": 8456,
+            "Mem": {
+              "BytesPerOp": 32853,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_8k",
+            "Runs": 122336,
+            "NsPerOp": 11383,
+            "Mem": {
+              "BytesPerOp": 32816,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_32k/buffer_topic_8k-2",
+            "Runs": 175891,
+            "NsPerOp": 6154,
+            "Mem": {
+              "BytesPerOp": 32853,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_0k",
+            "Runs": 45822,
+            "NsPerOp": 28303,
+            "Mem": {
+              "BytesPerOp": 131120,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_0k-2",
+            "Runs": 56144,
+            "NsPerOp": 19324,
+            "Mem": {
+              "BytesPerOp": 131127,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_2k",
+            "Runs": 40916,
+            "NsPerOp": 27693,
+            "Mem": {
+              "BytesPerOp": 131120,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_2k-2",
+            "Runs": 54967,
+            "NsPerOp": 18892,
+            "Mem": {
+              "BytesPerOp": 131155,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_8k",
+            "Runs": 20407,
+            "NsPerOp": 49039,
+            "Mem": {
+              "BytesPerOp": 131120,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          },
+          {
+            "Name": "BenchmarkEngine/msg_bytes_128k/buffer_topic_8k-2",
+            "Runs": 69759,
+            "NsPerOp": 24883,
+            "Mem": {
+              "BytesPerOp": 131151,
+              "AllocsPerOp": 3,
+              "MBPerSec": 0
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
