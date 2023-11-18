@@ -1,0 +1,30 @@
+/* place your own styles here */
+div.chart-group div.chart div.chart p {
+    display: none;
+}
+
+div div.chart-group {
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 10px; /* Add rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+    background-color: #fefefe; /* Set the background color */
+}
+
+div div.chart-group h2 {
+    text-align: right;
+    margin: 0px;
+    background-color: #e8e8e8; /* Set the background color */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+    border-radius: 10px; /* Add rounded corners */
+    border: 1px solid #ccc; /* Add a border */
+    padding: 20px;
+}
+
+div div.chart-group div.chart div.chart h3 {
+    text-align: left;
+    margin: 0px;
+    background-color: #f8f8f8; /* Set the background color */
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); Add a subtle box shadow */
+    border-bottom: 1px solid #ccc; /* Add a border */
+    padding: 20px;
+}

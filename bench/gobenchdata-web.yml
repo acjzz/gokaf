@@ -1,0 +1,71 @@
+title: Gokaf Benchmark
+description: gokaf a straightforward, in-memory pubsub engine designed to facilitate nearly real-time data streams.
+repository: https://github.com/acjzz/gokaf
+benchmarksFile: results.json
+chartGroups:
+- name: Produce and Consume Messages grouped by message size
+  # description: Produce and Consume Messages grouped by message size
+  charts: 
+  - name: Messages of 2kB using 1 cpu
+    package: github.com/acjzz/gokaf
+    benchmarks: 
+    - BenchmarkEngine/msg_bytes_2k/buffer_topic_([0-128])k$
+  - name: Messages of 2kB using 2 cpu
+    package: github.com/acjzz/gokaf
+    benchmarks: 
+    - BenchmarkEngine/msg_bytes_2k/buffer_topic_([0-128])k-2
+  - name: Messages of 32kB using 1 cpu
+    package: github.com/acjzz/gokaf
+    benchmarks: 
+    - BenchmarkEngine/msg_bytes_32k/buffer_topic_([0-128])k$
+  - name: Messages of 32kB using 2 cpu
+    package: github.com/acjzz/gokaf
+    benchmarks: 
+    - BenchmarkEngine/msg_bytes_32k/buffer_topic_([0-128])k-2
+  - name: Messages of 128kB using 1 cpu
+    package: github.com/acjzz/gokaf
+    benchmarks: 
+    - BenchmarkEngine/msg_bytes_128k/buffer_topic_([0-128])k$
+  - name: Messages of 128kB using 2 cpu
+    package: github.com/acjzz/gokaf
+    benchmarks: 
+    - BenchmarkEngine/msg_bytes_128k/buffer_topic_([0-128])k-2
+- name: Produce and Consume Messages grouped by topic buffer size
+  # description: Produce and Consume Messages grouped by message size
+  charts: 
+  - name: No Buffer Size
+    package: github.com/acjzz/gokaf
+    benchmarks: 
+    - BenchmarkEngine/msg_bytes_2k/buffer_topic_0k$
+    - BenchmarkEngine/msg_bytes_32k/buffer_topic_0k$
+    - BenchmarkEngine/msg_bytes_128k/buffer_topic_0k$
+  - name: No Buffer Size using 2 cpu
+    package: github.com/acjzz/gokaf
+    benchmarks: 
+    - BenchmarkEngine/msg_bytes_2k/buffer_topic_0k-2
+    - BenchmarkEngine/msg_bytes_32k/buffer_topic_0k-2
+    - BenchmarkEngine/msg_bytes_128k/buffer_topic_0k-2
+  - name: Buffer Size of 2kB using 1 cpu
+    package: github.com/acjzz/gokaf
+    benchmarks: 
+    - BenchmarkEngine/msg_bytes_2k/buffer_topic_2k$
+    - BenchmarkEngine/msg_bytes_32k/buffer_topic_2k$
+    - BenchmarkEngine/msg_bytes_128k/buffer_topic_2k$
+  - name: Buffer Size of 2kB using 2 cpu
+    package: github.com/acjzz/gokaf
+    benchmarks: 
+    - BenchmarkEngine/msg_bytes_2k/buffer_topic_2k-2
+    - BenchmarkEngine/msg_bytes_32k/buffer_topic_2k-2
+    - BenchmarkEngine/msg_bytes_128k/buffer_topic_2k-2
+  - name: Buffer Size of 8kB using 1 cpu
+    package: github.com/acjzz/gokaf
+    benchmarks: 
+    - BenchmarkEngine/msg_bytes_2k/buffer_topic_8k$
+    - BenchmarkEngine/msg_bytes_38k/buffer_topic_8k$
+    - BenchmarkEngine/msg_bytes_128k/buffer_topic_8k$
+  - name: Buffer Size of 8kB using 2 cpu
+    package: github.com/acjzz/gokaf
+    benchmarks: 
+    - BenchmarkEngine/msg_bytes_2k/buffer_topic_8k-2
+    - BenchmarkEngine/msg_bytes_38k/buffer_topic_8k-2
+    - BenchmarkEngine/msg_bytes_128k/buffer_topic_8k-2

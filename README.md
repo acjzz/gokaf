@@ -1,1 +1,1 @@
-* [Benchmark](./dev/bench/index.html)
+* [Benchmark](./bench/index.html)
