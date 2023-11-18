@@ -5,7 +5,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/acjzz/gokaf?cache=v1)](https://goreportcard.com/report/github.com/acjzz/gokaf)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/acjzz/gokaf/blob/master/LICENSE)
 [![Go Reference](https://pkg.go.dev/badge/github.com/acjzz/gokaf.svg)](https://pkg.go.dev/github.com/acjzz/gokaf)
-![Static Badge](https://img.shields.io/badge/benchmarks-view-blue?link=https%3A%2F%2Facjzz.github.io%2Fgokaf%2Fbench%2Findex.html)
+[![Static Badge](https://img.shields.io/badge/benchmarks-view-blue?link=https%3A%2F%2Facjzz.github.io%2Fgokaf%2Fbench%2Findex.html)](https://acjzz.github.io/gokaf/bench/index.html)
 
 `gokaf` a straightforward, in-memory pubsub engine designed to facilitate nearly real-time data streams.
 
