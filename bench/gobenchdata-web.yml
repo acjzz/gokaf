@@ -6,27 +6,27 @@ chartGroups:
 # ---------------------------------------------------------------------------------------
 - name: "Single Topic: produce and consume messages using different buffer size"
   charts: 
-  - name: Messages of 2kB using 1 cpu
+  - name: "[1CPU] Messages of 2kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkSingleTopic/msg_2kB/buffer_([0-128])kB$
-  - name: Messages of 2kB using 2 cpu
+  - name: "[2CPU] Messages of 2kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkSingleTopic/msg_2kB/buffer_([0-128])kB-2
-  - name: Messages of 32kB using 1 cpu
+  - name: "[1CPU] Messages of 32kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkSingleTopic/msg_32kB/buffer_([0-128])kB$
-  - name: Messages of 32kB using 2 cpu
+  - name: "[2CPU] Messages of 32kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkSingleTopic/msg_32kB/buffer_([0-128])kB-2
-  - name: Messages of 128kB using 1 cpu
+  - name: "[1CPU] Messages of 128kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkSingleTopic/msg_128kB/buffer_([0-128])kB$
-  - name: Messages of 128kB using 2 cpu
+  - name: "[2CPU] Messages of 128kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkSingleTopic/msg_128kB/buffer_([0-128])kB-2
@@ -34,38 +34,38 @@ chartGroups:
 # ---------------------------------------------------------------------------------------
 - name: "Single Topic: produce and consume messages of different size"
   charts: 
-  - name: No Buffer Size
+  - name: "[1CPU] No Buffer Size"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkSingleTopic/msg_2kB/buffer_0kB$
     - BenchmarkSingleTopic/msg_32kB/buffer_0kB$
     - BenchmarkSingleTopic/msg_128kB/buffer_0kB$
 
-  - name: No Buffer Size using 2 cpu
+  - name: "[2CPU] No Buffer Size"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkSingleTopic/msg_2kB/buffer_0kB-2
     - BenchmarkSingleTopic/msg_32kB/buffer_0kB-2
     - BenchmarkSingleTopic/msg_128kB/buffer_0kB-2
-  - name: Buffer Size of 2kB using 1 cpu
+  - name: "[1CPU] Buffer Size of 2kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkSingleTopic/msg_2kB/buffer_2kB$
     - BenchmarkSingleTopic/msg_32kB/buffer_0kB-2
     - BenchmarkSingleTopic/msg_128kB/buffer_0kB-2
-  - name: Buffer Size of 2kB using 2 cpu
+  - name: "[2CPU] Buffer Size of 2kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkSingleTopic/msg_2kB/buffer_2kB-2
     - BenchmarkSingleTopic/msg_32kB/buffer_2kB-2
     - BenchmarkSingleTopic/msg_128kB/buffer_2kB-2
-  - name: Buffer Size of 8kB using 1 cpu
+  - name: "[1CPU] Buffer Size of 8kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkSingleTopic/msg_2kB/buffer_8kB$
     - BenchmarkSingleTopic/msg_32kB/buffer_8kB$
     - BenchmarkSingleTopic/msg_128kB/buffer_8kB$
-  - name: Buffer Size of 8kB using 2 cpu
+  - name: "[2CPU] Buffer Size of 8kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkSingleTopic/msg_2kB/buffer_8kB-2
@@ -75,29 +75,29 @@ chartGroups:
 # ---------------------------------------------------------------------------------------
 - name: "Two Topics: produce and consume messages using different buffer size"
   charts: 
-  - name: Two topics with messages of 2kB using 1 cpu
+  - name: "[1CPU] Two topics with messages of 2kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_([0-128])kB/2top_([0-9])prod_([0-9])con$
-  - name: Two topics with messages of 2kB using 2 cpu
+  - name: "[2CPU] Two topics with messages of 2kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_([0-128])kB/2top_([0-9])prod_([0-9])con-2
     # -----------------------------------------------------------------------------------
-  - name: Two topics with messages of 32kB using 1 cpu
+  - name: "[1CPU] Two topics with messages of 32kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_32kB/buffer_([0-128])kB/2top_([0-9])prod_([0-9])con$
-  - name: Two topics with messages of 32kB using 2 cpu
+  - name: "[2CPU] Two topics with messages of 32kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_32kB/buffer_([0-128])kB/2top_([0-9])prod_([0-9])con-2
     # -----------------------------------------------------------------------------------
-  - name: Two topics with messages of 128kB using 1 cpu
+  - name: "[1CPU] Two topics with messages of 128kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_128kB/buffer_([0-128])kB/2top_([0-9])prod_([0-9])con$
-  - name: Two topics with messages of 128kB using 2 cpu
+  - name: "[2CPU] Two topics with messages of 128kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_128kB/buffer_([0-128])kB/2top_([0-9])prod_([0-9])con-2
@@ -105,39 +105,39 @@ chartGroups:
 # ---------------------------------------------------------------------------------------
 - name: "Two Topics: produce and consume messages of different size"
   charts: 
-  - name: Two topics with no buffer using 1 cpu
+  - name: "[1CPU] Two topics with no buffer"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_0kB/2top_([0-9])prod_([0-9])con$
     - BenchmarkMultipleTopics/msg_32kB/buffer_0kB/2top_([0-9])prod_([0-9])con$
     - BenchmarkMultipleTopics/msg_128kB/buffer_0kB/2top_([0-9])prod_([0-9])con$
-  - name: Two topics with no buffer using 2 cpu
+  - name: "[2CPU] Two topics with no buffer"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_0kB/2top_([0-9])prod_([0-9])con-2
     - BenchmarkMultipleTopics/msg_32kB/buffer_0kB/2top_([0-9])prod_([0-9])con-2
     - BenchmarkMultipleTopics/msg_128kB/buffer_0kB/2top_([0-9])prod_([0-9])con-2
     # -----------------------------------------------------------------------------------
-  - name: Two topics with buffer of 2kB using 1 cpu
+  - name: "[1CPU] Two topics with buffer of 2kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_2kB/2top_([0-9])prod_([0-9])con$
     - BenchmarkMultipleTopics/msg_32kB/buffer_2kB/2top_([0-9])prod_([0-9])con$
     - BenchmarkMultipleTopics/msg_128kB/buffer_2kB/2top_([0-9])prod_([0-9])con$
-  - name: Two topics with buffer of 2kB using 2 cpu
+  - name: "[2CPU] Two topics with buffer of 2kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_2kB/2top_([0-9])prod_([0-9])con-2
     - BenchmarkMultipleTopics/msg_32kB/buffer_2kB/2top_([0-9])prod_([0-9])con-2
     - BenchmarkMultipleTopics/msg_128kB/buffer_2kB/2top_([0-9])prod_([0-9])con-2
     # -----------------------------------------------------------------------------------
-  - name: Two topics with buffer of 8kB using 1 cpu
+  - name: "[1CPU] Two topics with buffer of 8kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_8kB/2top_([0-9])prod_([0-9])con$
     - BenchmarkMultipleTopics/msg_32kB/buffer_8kB/2top_([0-9])prod_([0-9])con$
     - BenchmarkMultipleTopics/msg_128kB/buffer_8kB/2top_([0-9])prod_([0-9])con$
-  - name: Two topics with buffer of 8kB using 2 cpu
+  - name: "[2CPU] Two topics with buffer of 8kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_8kB/2top_([0-9])prod_([0-9])con-2
@@ -147,29 +147,29 @@ chartGroups:
 # ---------------------------------------------------------------------------------------
 - name: "Five Topics: produce and consume messages using different buffer size"
   charts: 
-  - name: Five topics with messages of 2kB using 1 cpu
+  - name: "[1CPU] Five topics with messages of 2kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_([0-128])kB/5top_([0-9])prod_([0-9])con$
-  - name: Five topics with messages of 2kB using 2 cpu
+  - name: "[2CPU] Five topics with messages of 2kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_([0-128])kB/5top_([0-9])prod_([0-9])con-2
     # -----------------------------------------------------------------------------------
-  - name: Five topics with messages of 32kB using 1 cpu
+  - name: "[1CPU] Five topics with messages of 32kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_32kB/buffer_([0-128])kB/5top_([0-9])prod_([0-9])con$
-  - name: Five topics with messages of 32kB using 2 cpu
+  - name: "[2CPU] Five topics with messages of 32kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_32kB/buffer_([0-128])kB/5top_([0-9])prod_([0-9])con-2
     # -----------------------------------------------------------------------------------
-  - name: Five topics with messages of 128kB using 1 cpu
+  - name: "[1CPU] Five topics with messages of 128kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_128kB/buffer_([0-128])kB/5top_([0-9])prod_([0-9])con$
-  - name: Five topics with messages of 128kB using 2 cpu
+  - name: "[2CPU] Five topics with messages of 128kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_128kB/buffer_([0-128])kB/5top_([0-9])prod_([0-9])con-2
@@ -177,39 +177,39 @@ chartGroups:
 # ---------------------------------------------------------------------------------------
 - name: "Five Topics: produce and consume messages of different size"
   charts: 
-  - name: Five topics with no buffer using 1 cpu
+  - name: "[1CPU] Five topics with no buffer"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_0kB/5top_([0-9])prod_([0-9])con$
     - BenchmarkMultipleTopics/msg_32kB/buffer_0kB/5top_([0-9])prod_([0-9])con$
     - BenchmarkMultipleTopics/msg_128kB/buffer_0kB/5top_([0-9])prod_([0-9])con$
-  - name: Five topics with no buffer using 2 cpu
+  - name: "[2CPU] Five topics with no buffer"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_0kB/5top_([0-9])prod_([0-9])con-2
     - BenchmarkMultipleTopics/msg_32kB/buffer_0kB/5top_([0-9])prod_([0-9])con-2
     - BenchmarkMultipleTopics/msg_128kB/buffer_0kB/5top_([0-9])prod_([0-9])con-2
     # -----------------------------------------------------------------------------------
-  - name: Five topics with buffer of 2kB using 1 cpu
+  - name: "[1CPU] Five topics with buffer of 2kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_2kB/5top_([0-9])prod_([0-9])con$
     - BenchmarkMultipleTopics/msg_32kB/buffer_2kB/5top_([0-9])prod_([0-9])con$
     - BenchmarkMultipleTopics/msg_128kB/buffer_2kB/5top_([0-9])prod_([0-9])con$
-  - name: Five topics with buffer of 2kB using 2 cpu
+  - name: "[2CPU] Five topics with buffer of 2kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_2kB/5top_([0-9])prod_([0-9])con-2
     - BenchmarkMultipleTopics/msg_32kB/buffer_2kB/5top_([0-9])prod_([0-9])con-2
     - BenchmarkMultipleTopics/msg_128kB/buffer_2kB/5top_([0-9])prod_([0-9])con-2
     # -----------------------------------------------------------------------------------
-  - name: Five topics with buffer of 8kB using 1 cpu
+  - name: "[1CPU] Five topics with buffer of 8k"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_8kB/5top_([0-9])prod_([0-9])con$
     - BenchmarkMultipleTopics/msg_32kB/buffer_8kB/5top_([0-9])prod_([0-9])con$
     - BenchmarkMultipleTopics/msg_128kB/buffer_8kB/5top_([0-9])prod_([0-9])con$
-  - name: Five topics with buffer of 8kB using 2 cpu
+  - name: "[2CPU] Five topics with buffer of 8kB"
     package: github.com/acjzz/gokaf
     benchmarks: 
     - BenchmarkMultipleTopics/msg_2kB/buffer_8kB/5top_([0-9])prod_([0-9])con-2

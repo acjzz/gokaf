@@ -11,7 +11,7 @@ div div.chart-group {
 }
 
 div div.chart-group h2 {
-    text-align: right;
+    text-align: left;
     margin: 0px;
     background-color: #e8e8e8; /* Set the background color */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
@@ -23,8 +23,8 @@ div div.chart-group h2 {
 div div.chart-group div.chart div.chart h3 {
     text-align: left;
     margin: 0px;
-    background-color: #f8f8f8; /* Set the background color */
+    background-color: #f3f3f3; /* Set the background color */
     /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); Add a subtle box shadow */
-    border-bottom: 1px solid #ccc; /* Add a border */
+    border: 1px solid #ccc; /* Add a border */
     padding: 20px;
 }
