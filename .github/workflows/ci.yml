@@ -39,7 +39,7 @@ jobs:
         curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.55.2
         go install -v github.com/go-critic/go-critic/cmd/gocritic@latest
     - name: Setup Python v3
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
     - name: Run pre-commit
       uses: pre-commit/action@v3.0.0
 
